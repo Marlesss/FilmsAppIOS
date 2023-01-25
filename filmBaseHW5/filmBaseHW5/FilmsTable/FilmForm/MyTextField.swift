@@ -12,7 +12,6 @@ class MyTextField: UITextField {
     
     init(frame: CGRect, placeholder: String) {
         super.init(frame: frame)
-        
         font = .systemFont(ofSize: 16)
         layer.cornerRadius = 8
         layer.borderWidth = 1

@@ -1,5 +1,5 @@
 //
-//  NamedDataField.swift
+//  NamedDateField.swift
 //  ios-itmo-2022-assignment2
 //
 //  Created by Алексей Щербаков on 21.10.2022.
@@ -7,13 +7,15 @@
 
 import UIKit
 
+// TODO: fix keyboard editing
+// TODO: fix unfocusing datepicker
 class NamedDateField: NamedTextField {
     private let textField: MyTextField
-    private lazy var dtpckr: UIDatePicker = {
-        dtpckr = UIDatePicker()
-        dtpckr.datePickerMode = .date
-        dtpckr.preferredDatePickerStyle = .wheels
-        return dtpckr
+    private lazy var datePicker: UIDatePicker = {
+        datePicker = UIDatePicker()
+        datePicker.datePickerMode = .date
+        datePicker.preferredDatePickerStyle = .wheels
+        return datePicker
     }()
     private lazy var toolBar: UIToolbar = {
         toolBar = UIToolbar(frame: CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width, height: 40))
@@ -23,28 +25,28 @@ class NamedDateField: NamedTextField {
         toolBar.setItems([done, flexibleSpace, cancel], animated: true)
         return toolBar
     }()
-
+    
     override init(frame: CGRect, name: String, textField: MyTextField, validator: Validator) {
         self.textField = textField
         super.init(frame: frame, name: name, textField: textField, validator: validator)
-        textField.inputView = dtpckr
+        textField.inputView = datePicker
         textField.inputAccessoryView = toolBar
     }
-
+    
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-
+    
     @objc
     private func datePicked() {
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "yyyy"
-        textField.text = dateFormatter.string(from: dtpckr.date)
+        textField.text = dateFormatter.string(from: datePicker.date)
         validateData()
         textField.resignFirstResponder()
         sendActions(for: .editingChanged)
     }
-
+    
     @objc
     private func cancelPicking() {
         textField.resignFirstResponder()

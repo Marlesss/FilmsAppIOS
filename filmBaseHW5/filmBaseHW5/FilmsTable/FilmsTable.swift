@@ -16,7 +16,7 @@ class FilmsTable: UIViewController, MainView {
     @IBOutlet private var tableView: UITableView!
     
     private let refreshControl = UIRefreshControl()
-
+    
     private var films: [FilmData] = [
         FilmData(filmName: "Линейная алгебра", producer: "ЕАиЕВ", year: 1112, stars: 4),
         FilmData(filmName: "Пупа", producer: "Зарплата", year: 2023, stars: 2),
@@ -29,9 +29,9 @@ class FilmsTable: UIViewController, MainView {
             films.map({film in film.year})
         }
     }
-
+    
     private lazy var uniqYears: [Int] = Array(Set(years)).sorted(by: { x, y in x < y })
-
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         tableView.dataSource = self
@@ -51,7 +51,7 @@ class FilmsTable: UIViewController, MainView {
         tableView.reloadData()
         refreshControl.endRefreshing()
     }
-
+    
     @IBAction func addFilm(_ sender: UIButton) {
         let filmForm = FilmForm()
         filmForm.mainView = self
@@ -118,9 +118,9 @@ class FilmsTable: UIViewController, MainView {
     
     func tableView(_ tableView: UITableView, leadingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
         let deleteAction = UIContextualAction(style: .destructive,
-                                        title: "Удалить") { [weak self] (action, view, completionHandler) in
-                                            self?.deleteFilm(indexPath)
-                                            completionHandler(true)
+                                              title: "Удалить") { [weak self] (action, view, completionHandler) in
+            self?.deleteFilm(indexPath)
+            completionHandler(true)
         }
         return UISwipeActionsConfiguration(actions: [deleteAction])
     }

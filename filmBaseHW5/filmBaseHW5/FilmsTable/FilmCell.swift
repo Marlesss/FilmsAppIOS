@@ -16,7 +16,7 @@ class FilmCell: UITableViewCell {
     }
     
     @IBAction func starsChoosed() {
-        guard let mark = stars.getMark() else {
+        guard let mark = stars.getData() else {
             return
         }
         filmData?.stars = mark

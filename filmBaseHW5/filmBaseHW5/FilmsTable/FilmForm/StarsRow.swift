@@ -1,5 +1,5 @@
 //
-//  StarsMarker.swift
+//  StarsRow.swift
 //  ios-itmo-2022-assignment2
 //
 //  Created by Алексей Щербаков on 21.10.2022.
@@ -7,11 +7,13 @@
 
 import UIKit
 
-class StarsRow: UIControl {
+class StarsRow: UIControl, Field {
+    typealias DataType = Int?
+    
     private let n: Int
     private var stars: [StarButton] = []
     private var mark: Int?
-
+    
     init(n: Int) {
         self.n = n
         super.init(frame: .zero)
@@ -49,12 +51,22 @@ class StarsRow: UIControl {
         NSLayoutConstraint.activate(consntraints)
     }
     
-    public func getMark() -> Int? {
-        return mark
+    @objc
+    private func chooseStar(_ sender: StarButton) {
+        setMark(mark: sender.i + 1)
+        sendActions(for: .editingChanged)
     }
     
-    public func clearData() {
+    func clean() {
         setMark(mark: nil)
+    }
+    
+    func getData() -> Int? {
+        mark
+    }
+    
+    func dataIsValid() -> Bool {
+        mark != nil
     }
     
     public func setMark(mark: Int?) {
@@ -65,8 +77,16 @@ class StarsRow: UIControl {
             }
             return
         }
-        guard (1...n).contains(mark) else { return }
+        guard (1...n).contains(mark) else {
+            print("Wrong mark was set. Waited for one of (1...\(n)), got \(mark)")
+            return
+        }
         self.mark = mark
+        paintStars()
+    }
+    
+    private func paintStars() {
+        guard let mark = mark else {return}
         for i in 0..<n {
             stars[i].setImage(StarButton.starOffImage, for: .normal)
         }
@@ -74,11 +94,4 @@ class StarsRow: UIControl {
             stars[i].setImage(StarButton.starOnImage, for: .normal)
         }
     }
-    
-    @objc
-    private func chooseStar(_ sender: StarButton) {
-        setMark(mark: sender.i + 1)
-        sendActions(for: .editingChanged)
-    }
-
 }

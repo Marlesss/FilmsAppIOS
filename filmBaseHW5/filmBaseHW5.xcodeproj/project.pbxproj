@@ -29,6 +29,7 @@
 		A99A9A702980990D0026EBB1 /* FilmForm.swift in Sources */ = {isa = PBXBuildFile; fileRef = A99A9A6F2980990D0026EBB1 /* FilmForm.swift */; };
 		A99A9A72298099820026EBB1 /* FilmsTable.swift in Sources */ = {isa = PBXBuildFile; fileRef = A99A9A71298099820026EBB1 /* FilmsTable.swift */; };
 		A99A9A7429809A480026EBB1 /* FilmsTable.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A99A9A7329809A480026EBB1 /* FilmsTable.storyboard */; };
+		A99A9A782980C51C0026EBB1 /* Field.swift in Sources */ = {isa = PBXBuildFile; fileRef = A99A9A772980C51C0026EBB1 /* Field.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -56,6 +57,7 @@
 		A99A9A6F2980990D0026EBB1 /* FilmForm.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FilmForm.swift; sourceTree = "<group>"; };
 		A99A9A71298099820026EBB1 /* FilmsTable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FilmsTable.swift; sourceTree = "<group>"; };
 		A99A9A7329809A480026EBB1 /* FilmsTable.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = FilmsTable.storyboard; sourceTree = "<group>"; };
+		A99A9A772980C51C0026EBB1 /* Field.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Field.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -118,15 +120,16 @@
 			isa = PBXGroup;
 			children = (
 				A99A9A5A2980988F0026EBB1 /* Star.png */,
+				A99A9A552980988F0026EBB1 /* Union.png */,
 				A99A9A5E2980988F0026EBB1 /* StarButton.swift */,
 				A99A9A612980988F0026EBB1 /* StarsMarker.swift */,
 				A99A9A5B2980988F0026EBB1 /* StarsRow.swift */,
-				A99A9A552980988F0026EBB1 /* Union.png */,
 				A99A9A582980988F0026EBB1 /* Validator.swift */,
 				A99A9A602980988F0026EBB1 /* MyTextField.swift */,
 				A99A9A5F2980988F0026EBB1 /* NamedDateField.swift */,
 				A99A9A562980988F0026EBB1 /* NamedTextField.swift */,
 				A99A9A6F2980990D0026EBB1 /* FilmForm.swift */,
+				A99A9A772980C51C0026EBB1 /* Field.swift */,
 			);
 			path = FilmForm;
 			sourceTree = "<group>";
@@ -212,6 +215,7 @@
 				A99A9A682980988F0026EBB1 /* StarsRow.swift in Sources */,
 				A99A9A6B2980988F0026EBB1 /* StarButton.swift in Sources */,
 				A99A9A72298099820026EBB1 /* FilmsTable.swift in Sources */,
+				A99A9A782980C51C0026EBB1 /* Field.swift in Sources */,
 				A99A9A6D2980988F0026EBB1 /* MyTextField.swift in Sources */,
 				A99A9A702980990D0026EBB1 /* FilmForm.swift in Sources */,
 				A99A9A6C2980988F0026EBB1 /* NamedDateField.swift in Sources */,

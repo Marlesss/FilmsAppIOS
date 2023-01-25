@@ -7,7 +7,9 @@
 
 import UIKit
 
-class StarsMarker: UIControl {
+class StarsMarker: UIControl, Field {
+    typealias DataType = Int?
+    
     private var starsRow: StarsRow
     private lazy var textMark: UILabel = {
         textMark = UILabel()
@@ -16,7 +18,7 @@ class StarsMarker: UIControl {
         textMark.translatesAutoresizingMaskIntoConstraints = false
         return textMark
     }()
-
+    
     
     init(frame: CGRect, n: Int) {
         starsRow = StarsRow(n: n)
@@ -47,22 +49,9 @@ class StarsMarker: UIControl {
         fatalError("init(coder:) has not been implemented")
     }
     
-    public func getMark() -> Int? {
-        return starsRow.getMark()
-    }
-    
-    public func clearData() {
-        setMark(mark: nil)
-    }
-    
-    public func setMark(mark: Int?) {
-        starsRow.setMark(mark: mark)
-        setTextMark()
-    }
-        
     @objc
     private func setTextMark() {
-        let mark = getMark()
+        let mark = getData()
         if let mark = mark {
             textMark.text = ["Ужасно", "Плохо", "Нормально", "Хорошо", "Гениально!"][min(mark, 5) - 1]
         } else {
@@ -70,5 +59,21 @@ class StarsMarker: UIControl {
         }
         sendActions(for: .editingChanged)
     }
-
+    
+    func clean() {
+        setMark(mark: nil)
+    }
+    
+    func getData() -> DataType {
+        starsRow.getData()
+    }
+    
+    func dataIsValid() -> Bool {
+        getData() != nil
+    }
+    
+    public func setMark(mark: Int?) {
+        starsRow.setMark(mark: mark)
+        setTextMark()
+    }
 }

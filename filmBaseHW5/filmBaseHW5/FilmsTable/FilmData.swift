@@ -7,12 +7,12 @@ public class FilmData: CustomStringConvertible {
     
     var filmName, producer: String
     var year, stars: Int
-        
+    
     init(filmName: String, producer: String, year: Int, stars: Int) {
         self.filmName = filmName
         self.producer = producer
         self.year = year
         self.stars = stars
     }
-        
+    
 }

@@ -7,7 +7,9 @@
 
 import UIKit
 
-class NamedTextField : UIControl {
+class NamedTextField : UIControl, Field {
+    typealias DataType = String
+    
     private lazy var label: UILabel = {
         label = UILabel()
         label.font = .systemFont(ofSize: 12)
@@ -17,12 +19,20 @@ class NamedTextField : UIControl {
     
     private let textField: MyTextField
     private let validator: Validator
-
-    init(frame: CGRect, name: String, textField: MyTextField, validator: Validator) {
+    
+    init(frame: CGRect, name: String, textField: MyTextField, validator: Validator = Validator.Everything()) {
         self.textField = textField
         self.validator = validator
         
         super.init(frame: frame)
+        initSubviews(name: name)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+    private func initSubviews(name: String) {
         translatesAutoresizingMaskIntoConstraints = false
         addSubview(label)
         addSubview(textField)
@@ -37,23 +47,34 @@ class NamedTextField : UIControl {
             label.topAnchor.constraint(equalTo: topAnchor),
             label.heightAnchor.constraint(equalToConstant: 15),
             label.bottomAnchor.constraint(equalTo: textField.topAnchor, constant: -8),
-
+            
             textField.leadingAnchor.constraint(equalTo: leadingAnchor),
             textField.trailingAnchor.constraint(equalTo: trailingAnchor),
             textField.bottomAnchor.constraint(equalTo: bottomAnchor),
             textField.heightAnchor.constraint(equalToConstant: 50)
         ])
+        
     }
     
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
+    @objc
+    public func validateData() {
+        paint(stateIsNormal: dataIsValid())
     }
     
-    public func clearData() {
+    func clean() {
         textField.text = ""
         paint(stateIsNormal: true)
     }
-
+    
+    func getData() -> DataType {
+        textField.text ?? ""
+    }
+    
+    func dataIsValid() -> Bool {
+        validator.validate(text: getData())
+    }
+    
+    
     private func paint(stateIsNormal: Bool) {
         if (stateIsNormal) {
             label.textColor = UIColor(red: 102/255, green: 102/255, blue: 102/255, alpha: 1)
@@ -62,19 +83,6 @@ class NamedTextField : UIControl {
             label.textColor = .systemRed
             textField.layer.borderColor = UIColor.systemRed.cgColor
         }
-    }
-    
-    public func dataIsValid() -> Bool {
-        return validator.validate(text: textField.text ?? "")
-    }
-
-    @objc
-    public func validateData() {
-        paint(stateIsNormal: dataIsValid())
-    }
-    
-    public func getText() -> String {
-        return textField.text ?? ""
     }
     
     override func addTarget(_ target: Any?, action: Selector, for controlEvents: UIControl.Event) {
