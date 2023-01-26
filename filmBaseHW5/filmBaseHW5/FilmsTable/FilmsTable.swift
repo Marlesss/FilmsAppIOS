@@ -116,6 +116,7 @@ class FilmsTable: UIViewController, MainView {
         return cell
     }
     
+    // TODO: reverse the direction of swipe
     func tableView(_ tableView: UITableView, leadingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
         let deleteAction = UIContextualAction(style: .destructive,
                                               title: "Удалить") { [weak self] (action, view, completionHandler) in

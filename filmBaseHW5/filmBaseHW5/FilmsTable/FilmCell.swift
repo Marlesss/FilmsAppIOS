@@ -1,5 +1,7 @@
 import UIKit
 
+
+// TODO: Add image displaying
 class FilmCell: UITableViewCell {
     private var filmData: FilmData?
     @IBOutlet var filmName: UILabel!

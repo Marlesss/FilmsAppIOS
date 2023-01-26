@@ -30,6 +30,7 @@
 		A99A9A72298099820026EBB1 /* FilmsTable.swift in Sources */ = {isa = PBXBuildFile; fileRef = A99A9A71298099820026EBB1 /* FilmsTable.swift */; };
 		A99A9A7429809A480026EBB1 /* FilmsTable.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A99A9A7329809A480026EBB1 /* FilmsTable.storyboard */; };
 		A99A9A782980C51C0026EBB1 /* Field.swift in Sources */ = {isa = PBXBuildFile; fileRef = A99A9A772980C51C0026EBB1 /* Field.swift */; };
+		A99A9A7A29821C4B0026EBB1 /* ImagePicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = A99A9A7929821C4B0026EBB1 /* ImagePicker.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -58,6 +59,7 @@
 		A99A9A71298099820026EBB1 /* FilmsTable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FilmsTable.swift; sourceTree = "<group>"; };
 		A99A9A7329809A480026EBB1 /* FilmsTable.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = FilmsTable.storyboard; sourceTree = "<group>"; };
 		A99A9A772980C51C0026EBB1 /* Field.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Field.swift; sourceTree = "<group>"; };
+		A99A9A7929821C4B0026EBB1 /* ImagePicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImagePicker.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -130,6 +132,7 @@
 				A99A9A562980988F0026EBB1 /* NamedTextField.swift */,
 				A99A9A6F2980990D0026EBB1 /* FilmForm.swift */,
 				A99A9A772980C51C0026EBB1 /* Field.swift */,
+				A99A9A7929821C4B0026EBB1 /* ImagePicker.swift */,
 			);
 			path = FilmForm;
 			sourceTree = "<group>";
@@ -223,6 +226,7 @@
 				A99A9A632980988F0026EBB1 /* NamedTextField.swift in Sources */,
 				A99A9A3E298086900026EBB1 /* AppDelegate.swift in Sources */,
 				A99A9A652980988F0026EBB1 /* Validator.swift in Sources */,
+				A99A9A7A29821C4B0026EBB1 /* ImagePicker.swift in Sources */,
 				A99A9A40298086900026EBB1 /* SceneDelegate.swift in Sources */,
 				A99A9A6E2980988F0026EBB1 /* StarsMarker.swift in Sources */,
 			);

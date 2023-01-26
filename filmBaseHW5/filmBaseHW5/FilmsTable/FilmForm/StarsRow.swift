@@ -28,7 +28,7 @@ class StarsRow: UIControl, Field {
     
     private func initSubviews() {
         for i in 0..<n {
-            stars.append(StarButton(frame: CGRect(), i: i))
+            stars.append(StarButton(frame: .zero, i: i))
             addSubview(stars[i])
             stars[i].addTarget(self, action: #selector(chooseStar), for: .touchDown)
         }
@@ -45,7 +45,6 @@ class StarsRow: UIControl, Field {
             consntraints.append(NSLayoutConstraint(item: stars[i], attribute: .right, relatedBy: .equal, toItem: stars[i + 1], attribute: .left, multiplier: 1, constant: -12))
             consntraints.append(NSLayoutConstraint(item: stars[i], attribute: .width, relatedBy: .equal, toItem: stars[n - 1], attribute: .width, multiplier: 1, constant: 0))
             consntraints.append(NSLayoutConstraint(item: stars[i], attribute: .height, relatedBy: .equal, toItem: stars[n - 1], attribute: .height, multiplier: 1, constant: 0))
-            
         }
         
         NSLayoutConstraint.activate(consntraints)

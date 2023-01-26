@@ -1,4 +1,4 @@
-import Foundation
+import UIKit
 
 public class FilmData: CustomStringConvertible {
     public var description: String {
@@ -7,8 +7,10 @@ public class FilmData: CustomStringConvertible {
     
     var filmName, producer: String
     var year, stars: Int
+    var image: UIImage?
     
-    init(filmName: String, producer: String, year: Int, stars: Int) {
+    init(image: UIImage? = nil, filmName: String, producer: String, year: Int, stars: Int) {
+        self.image = image
         self.filmName = filmName
         self.producer = producer
         self.year = year

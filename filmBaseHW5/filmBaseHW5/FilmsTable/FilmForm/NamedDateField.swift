@@ -9,6 +9,9 @@ import UIKit
 
 // TODO: fix keyboard editing
 // TODO: fix unfocusing datepicker
+// TODO: datepicker localization?????
+// TODO: remove toolBar and add catching values on scrolling
+// TODO: scantext permission denied ;(
 class NamedDateField: NamedTextField {
     private let textField: MyTextField
     private lazy var datePicker: UIDatePicker = {

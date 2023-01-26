@@ -7,6 +7,7 @@
 
 import UIKit
 
+// TODO: fix colors on black theme
 class MyTextField: UITextField {
     static private let padding: CGFloat = 16
     

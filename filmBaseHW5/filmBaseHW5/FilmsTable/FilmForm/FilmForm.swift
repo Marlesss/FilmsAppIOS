@@ -7,8 +7,14 @@
 
 import UIKit
 
-class FilmForm: UIViewController {
+class FilmForm: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
     public var mainView: MainView?
+    
+    private lazy var scrollView: UIScrollView = {
+        scrollView = UIScrollView(frame: .zero)
+        scrollView.translatesAutoresizingMaskIntoConstraints = false
+        return scrollView
+    }()
     
     private lazy var headerLabel: UILabel = {
         headerLabel = UILabel()
@@ -31,6 +37,7 @@ class FilmForm: UIViewController {
                                               textField: MyTextField(frame: .zero, placeholder: "Год выпуска"),
                                               validator: Validator.yearFormat)
     private lazy var starsMarker = StarsMarker(frame: .zero, n: 5)
+    private lazy var fields: [any Field] = [imagePicker, filmNameNTF, producerNTF, yearNDF, starsMarker]
     private lazy var saveButton: UIButton = {
         saveButton = UIButton(type: .system)
         saveButton.setTitle("Сохранить", for: .normal)
@@ -52,59 +59,111 @@ class FilmForm: UIViewController {
         clearButton.addTarget(self, action: #selector(cleanData), for: .touchUpInside)
         return clearButton
     }()
+    private lazy var imagePicker: ImagePicker = {
+        imagePicker = ImagePicker()
+        imagePicker.addTarget(self, action: #selector(pickImage), for: .touchDown)
+        return imagePicker
+    }()
     
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
         self.view.backgroundColor = .systemBackground
-        for subview in [headerLabel, filmNameNTF, producerNTF, yearNDF, starsMarker, saveButton, clearButton] {
+        
+        for subview in [headerLabel, scrollView, clearButton, saveButton] {
             view.addSubview(subview)
         }
-        
-        for dataField in [filmNameNTF, producerNTF, yearNDF, starsMarker] {
-            dataField.addTarget(self, action: #selector(checkData), for: .editingChanged)
+        for subview in [imagePicker, filmNameNTF, producerNTF, yearNDF, starsMarker] {
+            scrollView.addSubview(subview)
         }
         
+        for dataField in fields {
+            (dataField as? UIControl)?.addTarget(self, action: #selector(checkData), for: .editingChanged)
+        }
+        
+        let safeLG = self.view.safeAreaLayoutGuide
+        let contentView = scrollView.contentLayoutGuide
         
         NSLayoutConstraint.activate([
-            headerLabel.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
-            headerLabel.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor),
-            headerLabel.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 32),
             
-            filmNameNTF.topAnchor.constraint(equalTo: headerLabel.bottomAnchor, constant: 40),
-            filmNameNTF.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 16),
-            filmNameNTF.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -16),
+            headerLabel.topAnchor.constraint(equalTo: safeLG.topAnchor),
+            headerLabel.leadingAnchor.constraint(equalTo: safeLG.leadingAnchor),
+            headerLabel.trailingAnchor.constraint(equalTo: safeLG.trailingAnchor),
+            
+            scrollView.topAnchor.constraint(equalTo: headerLabel.bottomAnchor, constant: 40),
+            scrollView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
+            scrollView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor),
+            
+            contentView.topAnchor.constraint(equalTo: scrollView.topAnchor),
+            contentView.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor),
+            contentView.trailingAnchor.constraint(equalTo: scrollView.trailingAnchor),
+            
+            imagePicker.topAnchor.constraint(equalTo: contentView.topAnchor),
+            imagePicker.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16),
+            imagePicker.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -16),
+            imagePicker.heightAnchor.constraint(equalToConstant: 172),
+            
+            filmNameNTF.topAnchor.constraint(equalTo: imagePicker.bottomAnchor, constant: 16),
+            filmNameNTF.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16),
+            filmNameNTF.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -16),
             
             producerNTF.topAnchor.constraint(equalTo: filmNameNTF.bottomAnchor, constant: 16),
-            producerNTF.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 16),
-            producerNTF.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -16),
+            producerNTF.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16),
+            producerNTF.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -16),
             
             yearNDF.topAnchor.constraint(equalTo: producerNTF.bottomAnchor, constant: 16),
-            yearNDF.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 16),
-            yearNDF.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -16),
+            yearNDF.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16),
+            yearNDF.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -16),
             
             starsMarker.topAnchor.constraint(equalTo: yearNDF.bottomAnchor, constant: 48),
-            starsMarker.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            starsMarker.centerXAnchor.constraint(equalTo: contentView.centerXAnchor),
+            starsMarker.bottomAnchor.constraint(equalTo: contentView.bottomAnchor),
             
-            clearButton.bottomAnchor.constraint(equalTo: saveButton.topAnchor, constant: -16),
-            clearButton.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 16),
-            clearButton.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -16),
+            clearButton.topAnchor.constraint(equalTo: scrollView.bottomAnchor, constant: 32),
+            clearButton.leadingAnchor.constraint(equalTo: safeLG.leadingAnchor, constant: 16),
+            clearButton.trailingAnchor.constraint(equalTo: safeLG.trailingAnchor, constant: -16),
             clearButton.heightAnchor.constraint(equalToConstant: 50),
             
-            
-            saveButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -32),
-            saveButton.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 16),
-            saveButton.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -16),
-            saveButton.heightAnchor.constraint(equalToConstant: 50)
+            saveButton.topAnchor.constraint(equalTo: clearButton.bottomAnchor, constant: 16),
+            saveButton.leadingAnchor.constraint(equalTo: safeLG.leadingAnchor, constant: 16),
+            saveButton.trailingAnchor.constraint(equalTo: safeLG.trailingAnchor, constant: -16),
+            saveButton.heightAnchor.constraint(equalToConstant: 50),
+            saveButton.bottomAnchor.constraint(equalTo: safeLG.bottomAnchor)
         ])
     }
     
+    @objc
+    private func pickImage() {
+        if UIImagePickerController.isSourceTypeAvailable(.photoLibrary){
+            imagePicker.imagePicker.delegate = self
+            imagePicker.imagePicker.sourceType = .photoLibrary
+            imagePicker.imagePicker.allowsEditing = false
+            
+            present(imagePicker.imagePicker, animated: true, completion: nil)
+        }
+    }
+    
+    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
+        var newImage: UIImage
+        
+        if let possibleImage = info[.editedImage] as? UIImage {
+            newImage = possibleImage
+        } else if let possibleImage = info[.originalImage] as? UIImage {
+            newImage = possibleImage
+        } else {
+            return
+        }
+        
+        imagePicker.setImage(newImage)
+        
+        dismiss(animated: true)
+    }
     
     @objc
     private func save() {
         assert(allDataIsValid())
-        let filmData = FilmData(filmName: filmNameNTF.getData(), producer: producerNTF.getData(), year: Int(yearNDF.getData())!, stars: starsMarker.getData()!)
+        let filmData = FilmData(image: imagePicker.getData()!, filmName: filmNameNTF.getData(), producer: producerNTF.getData(), year: Int(yearNDF.getData())!, stars: starsMarker.getData()!)
         mainView?.saveFilm(filmData)
         self.navigationController?.popViewController(animated: true)
     }
@@ -119,8 +178,8 @@ class FilmForm: UIViewController {
     }
     
     private func allDataIsValid() -> Bool {
-        [filmNameNTF, producerNTF, yearNDF, starsMarker]
-            .map { field in (field as? (any Field))?.dataIsValid() ?? false }
+        fields
+            .map { field in field.dataIsValid() }
             .reduce(into: true) { partialResult, bool in partialResult = partialResult && bool }
     }
     
@@ -137,10 +196,9 @@ class FilmForm: UIViewController {
     
     @objc
     private func cleanData() {
-        [filmNameNTF, producerNTF, yearNDF, starsMarker]
-            .forEach { field in
-                (field as? (any Field))?.clean()
-            }
+        fields.forEach { field in
+            field.clean()
+        }
     }
     
 }
