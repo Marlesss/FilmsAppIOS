@@ -5,7 +5,9 @@
 //  Created by Алексей Щербаков on 25.01.2023.
 //
 
-protocol Field {
+import UIKit
+
+protocol Field: UIControl {
     associatedtype DataType
     
     /// Cleans data

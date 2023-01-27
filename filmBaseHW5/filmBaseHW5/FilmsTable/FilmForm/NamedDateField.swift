@@ -7,10 +7,7 @@
 
 import UIKit
 
-// TODO: fix keyboard editing
-// TODO: fix unfocusing datepicker
 // TODO: datepicker localization?????
-// TODO: remove toolBar and add catching values on scrolling
 // TODO: scantext permission denied ;(
 class NamedDateField: NamedTextField {
     private let textField: MyTextField
@@ -20,20 +17,12 @@ class NamedDateField: NamedTextField {
         datePicker.preferredDatePickerStyle = .wheels
         return datePicker
     }()
-    private lazy var toolBar: UIToolbar = {
-        toolBar = UIToolbar(frame: CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width, height: 40))
-        let done = UIBarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(datePicked))
-        let flexibleSpace = UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil)
-        let cancel = UIBarButtonItem(barButtonSystemItem: .cancel, target: self, action: #selector(cancelPicking))
-        toolBar.setItems([done, flexibleSpace, cancel], animated: true)
-        return toolBar
-    }()
     
     override init(frame: CGRect, name: String, textField: MyTextField, validator: Validator) {
         self.textField = textField
         super.init(frame: frame, name: name, textField: textField, validator: validator)
         textField.inputView = datePicker
-        textField.inputAccessoryView = toolBar
+        datePicker.addTarget(self, action: #selector(datePicked), for: .valueChanged)
     }
     
     required init?(coder: NSCoder) {
@@ -45,8 +34,6 @@ class NamedDateField: NamedTextField {
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "yyyy"
         textField.text = dateFormatter.string(from: datePicker.date)
-        validateData()
-        textField.resignFirstResponder()
         sendActions(for: .editingChanged)
     }
     

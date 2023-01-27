@@ -74,14 +74,20 @@ class FilmForm: UIViewController, UIImagePickerControllerDelegate, UINavigationC
         for subview in [headerLabel, scrollView, clearButton, saveButton] {
             view.addSubview(subview)
         }
-        for subview in [imagePicker, filmNameNTF, producerNTF, yearNDF, starsMarker] {
+        for subview in fields {
             scrollView.addSubview(subview)
         }
         
         for dataField in fields {
-            (dataField as? UIControl)?.addTarget(self, action: #selector(checkData), for: .editingChanged)
+            dataField.addTarget(self, action: #selector(checkData), for: .editingChanged)
         }
         
+        let tap: UITapGestureRecognizer = UITapGestureRecognizer(
+        target: self,
+        action: #selector(dismissMyKeyboard))
+        //Add this tap gesture recognizer to the parent view
+        self.view.addGestureRecognizer(tap)
+
         let safeLG = self.view.safeAreaLayoutGuide
         let contentView = scrollView.contentLayoutGuide
         
@@ -134,6 +140,11 @@ class FilmForm: UIViewController, UIImagePickerControllerDelegate, UINavigationC
         ])
     }
     
+    @objc
+    private func dismissMyKeyboard() {
+        self.view.endEditing(true)
+    }
+
     @objc
     private func pickImage() {
         if UIImagePickerController.isSourceTypeAvailable(.photoLibrary){
