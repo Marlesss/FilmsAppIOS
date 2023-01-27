@@ -117,7 +117,8 @@ class FilmForm: UIViewController, UIImagePickerControllerDelegate, UINavigationC
             yearNDF.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -16),
             
             starsMarker.topAnchor.constraint(equalTo: yearNDF.bottomAnchor, constant: 48),
-            starsMarker.centerXAnchor.constraint(equalTo: contentView.centerXAnchor),
+            starsMarker.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 60),
+            starsMarker.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -60),
             starsMarker.bottomAnchor.constraint(equalTo: contentView.bottomAnchor),
             
             clearButton.topAnchor.constraint(equalTo: scrollView.bottomAnchor, constant: 32),

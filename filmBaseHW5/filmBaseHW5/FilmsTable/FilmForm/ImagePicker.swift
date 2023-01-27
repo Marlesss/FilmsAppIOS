@@ -7,6 +7,9 @@
 
 import UIKit
 
+
+// TODO: fix permission denied
+// [AXRuntimeCommon] AX Lookup problem - errorCode:1100 error:Permission denied portName:'com.apple.iphone.axserver' PID:1544
 class ImagePicker: UIControl, Field {
     typealias DataType = UIImage?
 

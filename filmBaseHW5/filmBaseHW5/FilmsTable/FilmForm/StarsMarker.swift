@@ -23,7 +23,6 @@ class StarsMarker: UIControl, Field {
     init(frame: CGRect, n: Int) {
         starsRow = StarsRow(n: n)
         super.init(frame: frame)
-        
         addSubview(textMark)
         addSubview(starsRow)
         
