@@ -15,6 +15,7 @@ class ImagePicker: UIControl, Field {
 
     private lazy var imageView: UIImageView = {
         imageView = UIImageView(frame: .zero)
+        imageView.contentMode = .scaleAspectFit
         imageView.translatesAutoresizingMaskIntoConstraints = false
         return imageView
     }()
@@ -24,6 +25,7 @@ class ImagePicker: UIControl, Field {
         defaultLabel.text = "Добавить постер"
         defaultLabel.font = .systemFont(ofSize: 16)
         defaultLabel.textAlignment = .center
+        defaultLabel.backgroundColor = .systemGray3
         defaultLabel.translatesAutoresizingMaskIntoConstraints = false
         return defaultLabel
     }()
@@ -41,12 +43,10 @@ class ImagePicker: UIControl, Field {
     }
     
     private func initSubviews() {
-        backgroundColor = .systemGray3
-        
         addSubview(imageView)
         addSubview(defaultLabel)
         
-        showImage(true)
+        showImage(false)
         
         translatesAutoresizingMaskIntoConstraints = false
         
@@ -58,13 +58,14 @@ class ImagePicker: UIControl, Field {
             
             defaultLabel.leadingAnchor.constraint(equalTo: leadingAnchor),
             defaultLabel.trailingAnchor.constraint(equalTo: trailingAnchor),
-            defaultLabel.centerYAnchor.constraint(equalTo: centerYAnchor),
+            defaultLabel.topAnchor.constraint(equalTo: topAnchor),
+            defaultLabel.bottomAnchor.constraint(equalTo: bottomAnchor),
         ])
     }
     
     public func setImage(_ image: UIImage) {
         imageView.image = image
-        showImage(false)
+        showImage(true)
         sendActions(for: .editingChanged)
     }
     
@@ -74,7 +75,7 @@ class ImagePicker: UIControl, Field {
     
     func clean() {
         imageView.image = nil
-        showImage(true)
+        showImage(false)
     }
     
     func dataIsValid() -> Bool {
@@ -82,8 +83,8 @@ class ImagePicker: UIControl, Field {
     }
     
     private func showImage(_ bool: Bool) {
-        imageView.isHidden = bool
-        defaultLabel.isHidden = !bool
+        imageView.isHidden = !bool
+        defaultLabel.isHidden = bool
     }
     
 }

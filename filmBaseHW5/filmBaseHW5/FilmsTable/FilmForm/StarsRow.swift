@@ -10,24 +10,27 @@ import UIKit
 class StarsRow: UIControl, Field {
     typealias DataType = Int?
     
-    private let n: Int
+    @IBInspectable private var n: Int = 0 {
+        didSet {
+            initSubviews()
+        }
+    }
     private var stars: [StarButton] = []
     private var mark: Int?
     
     init(n: Int) {
-        self.n = n
         super.init(frame: .zero)
-        initSubviews()
+        defer {
+            self.n = n
+        }
     }
     
     required init?(coder: NSCoder) {
-        self.n = 5
         super.init(coder: coder)
-        initSubviews()
     }
     
     private func initSubviews() {
-        let x = (frame.width - frame.height * 5) / 4
+        let separator = min(max((frame.width - frame.height * 5) / 4, 0), 32)
         for i in 0..<n {
             stars.append(StarButton(frame: .zero, i: i))
             addSubview(stars[i])
@@ -43,7 +46,7 @@ class StarsRow: UIControl, Field {
             consntraints.append(NSLayoutConstraint(item: stars[i], attribute: .bottom, relatedBy: .equal, toItem: self, attribute: .bottom, multiplier: 1, constant: 0))
         }
         for i in 0..<(n - 1) {
-            consntraints.append(NSLayoutConstraint(item: stars[i], attribute: .right, relatedBy: .equal, toItem: stars[i + 1], attribute: .left, multiplier: 1, constant: -x))
+            consntraints.append(NSLayoutConstraint(item: stars[i], attribute: .right, relatedBy: .equal, toItem: stars[i + 1], attribute: .left, multiplier: 1, constant: -separator))
             consntraints.append(NSLayoutConstraint(item: stars[i], attribute: .width, relatedBy: .equal, toItem: stars[n - 1], attribute: .width, multiplier: 1, constant: 0))
             consntraints.append(NSLayoutConstraint(item: stars[i], attribute: .height, relatedBy: .equal, toItem: stars[n - 1], attribute: .height, multiplier: 1, constant: 0))
         }
@@ -59,6 +62,7 @@ class StarsRow: UIControl, Field {
     
     func clean() {
         setMark(mark: nil)
+        
     }
     
     func getData() -> Int? {

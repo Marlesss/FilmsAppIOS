@@ -7,6 +7,7 @@
 
 import UIKit
 
+// TODO: Fix error caused by tap in the other TextField
 // TODO: datepicker localization?????
 // TODO: scantext permission denied ;(
 class NamedDateField: NamedTextField {
@@ -34,7 +35,7 @@ class NamedDateField: NamedTextField {
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "yyyy"
         textField.text = dateFormatter.string(from: datePicker.date)
-        sendActions(for: .editingChanged)
+        textField.sendActions(for: .editingChanged)
     }
     
     @objc
