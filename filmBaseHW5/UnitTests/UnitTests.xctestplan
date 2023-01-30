@@ -1,0 +1,24 @@
+{
+  "configurations" : [
+    {
+      "id" : "9E3AC33C-FA17-438A-83CF-109EB6407393",
+      "name" : "Configuration 1",
+      "options" : {
+
+      }
+    }
+  ],
+  "defaultOptions" : {
+
+  },
+  "testTargets" : [
+    {
+      "target" : {
+        "containerPath" : "container:filmBaseHW5.xcodeproj",
+        "identifier" : "A92B27A829872E080044D1E9",
+        "name" : "UnitTests"
+      }
+    }
+  ],
+  "version" : 1
+}

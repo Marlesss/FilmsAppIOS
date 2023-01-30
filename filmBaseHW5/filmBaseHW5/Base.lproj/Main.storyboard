@@ -32,32 +32,86 @@
                         <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ReD-Ah-6gf">
-                                <rect key="frame" x="146" y="343" width="75" height="35"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="dNM-fF-WNy" customClass="NamedTextField" customModule="filmBaseHW5" customModuleProvider="target">
+                                <rect key="frame" x="16" y="179" width="361" height="72"/>
+                                <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="72" id="YuR-i5-w5D"/>
+                                </constraints>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="string" keyPath="name" value="Логин"/>
+                                    <userDefinedRuntimeAttribute type="string" keyPath="placeholder" value="Введите свой логин"/>
+                                </userDefinedRuntimeAttributes>
+                            </view>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="E2a-3X-PDH" customClass="NamedTextField" customModule="filmBaseHW5" customModuleProvider="target">
+                                <rect key="frame" x="16" y="267" width="361" height="72"/>
+                                <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="72" id="3Sv-es-nxm"/>
+                                </constraints>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="string" keyPath="name" value="Пароль"/>
+                                    <userDefinedRuntimeAttribute type="string" keyPath="placeholder" value="Введите свой пароль"/>
+                                </userDefinedRuntimeAttributes>
+                            </view>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Войти" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="lfa-fy-vtL">
+                                <rect key="frame" x="16" y="103" width="361" height="36"/>
+                                <fontDescription key="fontDescription" type="boldSystem" pointSize="30"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ReD-Ah-6gf">
+                                <rect key="frame" x="16" y="363" width="361" height="50"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="50" id="aEX-Xp-MDL"/>
+                                </constraints>
                                 <state key="normal" title="Button"/>
-                                <buttonConfiguration key="configuration" style="plain" title="Button"/>
+                                <buttonConfiguration key="configuration" style="plain" title="Войти" cornerStyle="fixed">
+                                    <backgroundConfiguration key="background" cornerRadius="25">
+                                        <color key="backgroundColor" systemColor="systemGreenColor"/>
+                                    </backgroundConfiguration>
+                                    <color key="baseForegroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                </buttonConfiguration>
                                 <connections>
-                                    <action selector="doMake" destination="BYZ-38-t0r" eventType="touchDown" id="pyL-xq-dtC"/>
+                                    <action selector="login" destination="BYZ-38-t0r" eventType="touchDown" id="HeR-TG-upP"/>
                                 </connections>
                             </button>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <constraints>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="dNM-fF-WNy" secondAttribute="trailing" constant="16" id="0vS-BM-XF6"/>
+                            <constraint firstItem="ReD-Ah-6gf" firstAttribute="top" secondItem="E2a-3X-PDH" secondAttribute="bottom" constant="24" id="6mE-0e-zEt"/>
+                            <constraint firstItem="E2a-3X-PDH" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="16" id="BpX-uQ-JYn"/>
+                            <constraint firstItem="dNM-fF-WNy" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="16" id="H1S-7c-Njn"/>
+                            <constraint firstItem="lfa-fy-vtL" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="16" id="NJO-k0-93L"/>
+                            <constraint firstItem="lfa-fy-vtL" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" id="XxK-4E-lVi"/>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="lfa-fy-vtL" secondAttribute="trailing" constant="16" id="YZO-Cr-asl"/>
+                            <constraint firstItem="ReD-Ah-6gf" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="16" id="cg7-oW-ThS"/>
+                            <constraint firstItem="E2a-3X-PDH" firstAttribute="top" secondItem="dNM-fF-WNy" secondAttribute="bottom" constant="16" id="dF0-7A-fNi"/>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="ReD-Ah-6gf" secondAttribute="trailing" constant="16" id="jcD-H4-LGw"/>
+                            <constraint firstItem="dNM-fF-WNy" firstAttribute="top" secondItem="lfa-fy-vtL" secondAttribute="bottom" constant="40" id="tpt-st-mK2"/>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="E2a-3X-PDH" secondAttribute="trailing" constant="16" id="vkk-K3-KYM"/>
+                        </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="5G0-qM-HzS"/>
                     <connections>
-                        <outlet property="myButton" destination="ReD-Ah-6gf" id="NKx-G0-sId"/>
+                        <outlet property="loginButton" destination="ReD-Ah-6gf" id="pho-fy-n9E"/>
+                        <outlet property="loginTF" destination="dNM-fF-WNy" id="wlq-nj-AFS"/>
+                        <outlet property="passwordTF" destination="E2a-3X-PDH" id="EYj-91-XIt"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="11" y="-34"/>
+            <point key="canvasLocation" x="9.9236641221374047" y="-34.507042253521128"/>
         </scene>
     </scenes>
     <resources>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
+        <systemColor name="systemGreenColor">
+            <color red="0.20392156862745098" green="0.7803921568627451" blue="0.34901960784313724" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
     </resources>
 </document>

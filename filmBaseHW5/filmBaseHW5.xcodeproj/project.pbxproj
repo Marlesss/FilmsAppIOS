@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		A92B27AC29872E080044D1E9 /* ServerAPITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A92B27AB29872E080044D1E9 /* ServerAPITests.swift */; };
 		A99A9A3E298086900026EBB1 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A99A9A3D298086900026EBB1 /* AppDelegate.swift */; };
 		A99A9A40298086900026EBB1 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A99A9A3F298086900026EBB1 /* SceneDelegate.swift */; };
 		A99A9A42298086900026EBB1 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A99A9A41298086900026EBB1 /* ViewController.swift */; };
@@ -31,9 +32,25 @@
 		A99A9A7429809A480026EBB1 /* FilmsTable.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A99A9A7329809A480026EBB1 /* FilmsTable.storyboard */; };
 		A99A9A782980C51C0026EBB1 /* Field.swift in Sources */ = {isa = PBXBuildFile; fileRef = A99A9A772980C51C0026EBB1 /* Field.swift */; };
 		A99A9A7A29821C4B0026EBB1 /* ImagePicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = A99A9A7929821C4B0026EBB1 /* ImagePicker.swift */; };
+		A9DCE1B0298463EB00189B37 /* FilmsSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9DCE1AF298463EB00189B37 /* FilmsSource.swift */; };
+		A9DCE1B22986BEBF00189B37 /* ServerAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9DCE1B12986BEBF00189B37 /* ServerAPI.swift */; };
 /* End PBXBuildFile section */
 
+/* Begin PBXContainerItemProxy section */
+		A92B27AD29872E080044D1E9 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = A99A9A32298086900026EBB1 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = A99A9A39298086900026EBB1;
+			remoteInfo = filmBaseHW5;
+		};
+/* End PBXContainerItemProxy section */
+
 /* Begin PBXFileReference section */
+		A92B27A929872E080044D1E9 /* UnitTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = UnitTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		A92B27AB29872E080044D1E9 /* ServerAPITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServerAPITests.swift; sourceTree = "<group>"; };
+		A92B27B229872E6F0044D1E9 /* UnitTests */ = {isa = PBXFileReference; lastKnownFileType = folder; path = UnitTests; sourceTree = "<group>"; };
+		A92B27B329872EAF0044D1E9 /* UnitTests.xctestplan */ = {isa = PBXFileReference; lastKnownFileType = text; path = UnitTests.xctestplan; sourceTree = "<group>"; };
 		A99A9A3A298086900026EBB1 /* filmBaseHW5.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = filmBaseHW5.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		A99A9A3D298086900026EBB1 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		A99A9A3F298086900026EBB1 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -60,9 +77,18 @@
 		A99A9A7329809A480026EBB1 /* FilmsTable.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = FilmsTable.storyboard; sourceTree = "<group>"; };
 		A99A9A772980C51C0026EBB1 /* Field.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Field.swift; sourceTree = "<group>"; };
 		A99A9A7929821C4B0026EBB1 /* ImagePicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImagePicker.swift; sourceTree = "<group>"; };
+		A9DCE1AF298463EB00189B37 /* FilmsSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilmsSource.swift; sourceTree = "<group>"; };
+		A9DCE1B12986BEBF00189B37 /* ServerAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServerAPI.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		A92B27A629872E080044D1E9 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		A99A9A37298086900026EBB1 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -73,11 +99,22 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		A92B27AA29872E080044D1E9 /* UnitTests */ = {
+			isa = PBXGroup;
+			children = (
+				A92B27AB29872E080044D1E9 /* ServerAPITests.swift */,
+				A92B27B329872EAF0044D1E9 /* UnitTests.xctestplan */,
+			);
+			path = UnitTests;
+			sourceTree = "<group>";
+		};
 		A99A9A31298086900026EBB1 = {
 			isa = PBXGroup;
 			children = (
+				A92B27B229872E6F0044D1E9 /* UnitTests */,
 				A99A9A512980869C0026EBB1 /* README.md */,
 				A99A9A3C298086900026EBB1 /* filmBaseHW5 */,
+				A92B27AA29872E080044D1E9 /* UnitTests */,
 				A99A9A3B298086900026EBB1 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -86,6 +123,7 @@
 			isa = PBXGroup;
 			children = (
 				A99A9A3A298086900026EBB1 /* filmBaseHW5.app */,
+				A92B27A929872E080044D1E9 /* UnitTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -93,6 +131,7 @@
 		A99A9A3C298086900026EBB1 /* filmBaseHW5 */ = {
 			isa = PBXGroup;
 			children = (
+				A9E6BB85298874AD00BE85DC /* InputFields */,
 				A99A9A7529809C8D0026EBB1 /* FilmsTable */,
 				A99A9A3D298086900026EBB1 /* AppDelegate.swift */,
 				A99A9A3F298086900026EBB1 /* SceneDelegate.swift */,
@@ -101,6 +140,7 @@
 				A99A9A46298086910026EBB1 /* Assets.xcassets */,
 				A99A9A48298086910026EBB1 /* LaunchScreen.storyboard */,
 				A99A9A4B298086910026EBB1 /* Info.plist */,
+				A9DCE1B12986BEBF00189B37 /* ServerAPI.swift */,
 			);
 			path = filmBaseHW5;
 			sourceTree = "<group>";
@@ -108,21 +148,24 @@
 		A99A9A7529809C8D0026EBB1 /* FilmsTable */ = {
 			isa = PBXGroup;
 			children = (
-				A99A9A762980BBA60026EBB1 /* FilmForm */,
+				A99A9A6F2980990D0026EBB1 /* FilmForm.swift */,
 				A99A9A5C2980988F0026EBB1 /* FilmCell.swift */,
 				A99A9A5D2980988F0026EBB1 /* FilmCell.xib */,
 				A99A9A572980988F0026EBB1 /* FilmData.swift */,
 				A99A9A7329809A480026EBB1 /* FilmsTable.storyboard */,
 				A99A9A71298099820026EBB1 /* FilmsTable.swift */,
+				A9DCE1AF298463EB00189B37 /* FilmsSource.swift */,
 			);
 			path = FilmsTable;
 			sourceTree = "<group>";
 		};
-		A99A9A762980BBA60026EBB1 /* FilmForm */ = {
+		A9E6BB85298874AD00BE85DC /* InputFields */ = {
 			isa = PBXGroup;
 			children = (
 				A99A9A5A2980988F0026EBB1 /* Star.png */,
 				A99A9A552980988F0026EBB1 /* Union.png */,
+				A99A9A772980C51C0026EBB1 /* Field.swift */,
+				A99A9A7929821C4B0026EBB1 /* ImagePicker.swift */,
 				A99A9A5E2980988F0026EBB1 /* StarButton.swift */,
 				A99A9A612980988F0026EBB1 /* StarsMarker.swift */,
 				A99A9A5B2980988F0026EBB1 /* StarsRow.swift */,
@@ -130,16 +173,31 @@
 				A99A9A602980988F0026EBB1 /* MyTextField.swift */,
 				A99A9A5F2980988F0026EBB1 /* NamedDateField.swift */,
 				A99A9A562980988F0026EBB1 /* NamedTextField.swift */,
-				A99A9A6F2980990D0026EBB1 /* FilmForm.swift */,
-				A99A9A772980C51C0026EBB1 /* Field.swift */,
-				A99A9A7929821C4B0026EBB1 /* ImagePicker.swift */,
 			);
-			path = FilmForm;
+			path = InputFields;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
+		A92B27A829872E080044D1E9 /* UnitTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = A92B27AF29872E080044D1E9 /* Build configuration list for PBXNativeTarget "UnitTests" */;
+			buildPhases = (
+				A92B27A529872E080044D1E9 /* Sources */,
+				A92B27A629872E080044D1E9 /* Frameworks */,
+				A92B27A729872E080044D1E9 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				A92B27AE29872E080044D1E9 /* PBXTargetDependency */,
+			);
+			name = UnitTests;
+			productName = UnitTests;
+			productReference = A92B27A929872E080044D1E9 /* UnitTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
 		A99A9A39298086900026EBB1 /* filmBaseHW5 */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = A99A9A4E298086910026EBB1 /* Build configuration list for PBXNativeTarget "filmBaseHW5" */;
@@ -167,6 +225,10 @@
 				LastSwiftUpdateCheck = 1420;
 				LastUpgradeCheck = 1420;
 				TargetAttributes = {
+					A92B27A829872E080044D1E9 = {
+						CreatedOnToolsVersion = 14.2;
+						TestTargetID = A99A9A39298086900026EBB1;
+					};
 					A99A9A39298086900026EBB1 = {
 						CreatedOnToolsVersion = 14.2;
 					};
@@ -186,11 +248,19 @@
 			projectRoot = "";
 			targets = (
 				A99A9A39298086900026EBB1 /* filmBaseHW5 */,
+				A92B27A829872E080044D1E9 /* UnitTests */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
+		A92B27A729872E080044D1E9 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		A99A9A38298086900026EBB1 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -209,6 +279,14 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		A92B27A529872E080044D1E9 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				A92B27AC29872E080044D1E9 /* ServerAPITests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		A99A9A36298086900026EBB1 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -220,6 +298,7 @@
 				A99A9A72298099820026EBB1 /* FilmsTable.swift in Sources */,
 				A99A9A782980C51C0026EBB1 /* Field.swift in Sources */,
 				A99A9A6D2980988F0026EBB1 /* MyTextField.swift in Sources */,
+				A9DCE1B22986BEBF00189B37 /* ServerAPI.swift in Sources */,
 				A99A9A702980990D0026EBB1 /* FilmForm.swift in Sources */,
 				A99A9A6C2980988F0026EBB1 /* NamedDateField.swift in Sources */,
 				A99A9A42298086900026EBB1 /* ViewController.swift in Sources */,
@@ -228,11 +307,20 @@
 				A99A9A652980988F0026EBB1 /* Validator.swift in Sources */,
 				A99A9A7A29821C4B0026EBB1 /* ImagePicker.swift in Sources */,
 				A99A9A40298086900026EBB1 /* SceneDelegate.swift in Sources */,
+				A9DCE1B0298463EB00189B37 /* FilmsSource.swift in Sources */,
 				A99A9A6E2980988F0026EBB1 /* StarsMarker.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		A92B27AE29872E080044D1E9 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = A99A9A39298086900026EBB1 /* filmBaseHW5 */;
+			targetProxy = A92B27AD29872E080044D1E9 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
 		A99A9A43298086900026EBB1 /* Main.storyboard */ = {
@@ -254,6 +342,42 @@
 /* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
+		A92B27B029872E080044D1E9 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = F76FHTJZW5;
+				GENERATE_INFOPLIST_FILE = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = aboba.UnitTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/filmBaseHW5.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/filmBaseHW5";
+			};
+			name = Debug;
+		};
+		A92B27B129872E080044D1E9 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = F76FHTJZW5;
+				GENERATE_INFOPLIST_FILE = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = aboba.UnitTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/filmBaseHW5.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/filmBaseHW5";
+			};
+			name = Release;
+		};
 		A99A9A4C298086910026EBB1 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -427,6 +551,15 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		A92B27AF29872E080044D1E9 /* Build configuration list for PBXNativeTarget "UnitTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				A92B27B029872E080044D1E9 /* Debug */,
+				A92B27B129872E080044D1E9 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		A99A9A35298086900026EBB1 /* Build configuration list for PBXProject "filmBaseHW5" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (

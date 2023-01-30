@@ -7,6 +7,7 @@
 
 import UIKit
 
+// TODO: refactor inits
 class NamedTextField : UIControl, Field {
     typealias DataType = String
     
@@ -20,23 +21,54 @@ class NamedTextField : UIControl, Field {
     private let textField: MyTextField
     private let validator: Validator
     
+    @IBInspectable private var name: String = "" {
+        didSet {
+            label.text = name
+        }
+    }
+    
+    @IBInspectable private var placeholder: String = "" {
+        didSet {
+            textField.placeholder = placeholder
+        }
+    }
+
+    
     init(frame: CGRect, name: String, textField: MyTextField, validator: Validator = Validator.Everything()) {
         self.textField = textField
         self.validator = validator
         
         super.init(frame: frame)
-        initSubviews(name: name)
+        initSubviews()
+        defer {
+            self.name = name
+        }
     }
+    
+    init(frame: CGRect, name: String, placeholder: String, validator: Validator = Validator.Everything()) {
+        self.textField = MyTextField()
+        self.validator = validator
+        
+        super.init(frame: frame)
+        initSubviews()
+        defer {
+            self.name = name
+            self.placeholder = placeholder
+        }
+    }
+
     
     required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
+        self.textField = MyTextField()
+        self.validator = .Everything()
+        super.init(coder: coder)
+        initSubviews()
     }
     
-    private func initSubviews(name: String) {
+    private func initSubviews() {
         translatesAutoresizingMaskIntoConstraints = false
         addSubview(label)
         addSubview(textField)
-        label.text = name
         paint(stateIsNormal: true)
         
         textField.addTarget(self, action: #selector(validateData), for: .editingChanged)
@@ -45,14 +77,18 @@ class NamedTextField : UIControl, Field {
             label.leadingAnchor.constraint(equalTo: leadingAnchor),
             label.trailingAnchor.constraint(equalTo: trailingAnchor),
             label.topAnchor.constraint(equalTo: topAnchor),
-            label.heightAnchor.constraint(equalToConstant: 15),
+//            label.heightAnchor.constraint(equalToConstant: 15),
             label.bottomAnchor.constraint(equalTo: textField.topAnchor, constant: -8),
             
             textField.leadingAnchor.constraint(equalTo: leadingAnchor),
             textField.trailingAnchor.constraint(equalTo: trailingAnchor),
             textField.bottomAnchor.constraint(equalTo: bottomAnchor),
-            textField.heightAnchor.constraint(equalToConstant: 50)
+//            textField.heightAnchor.constraint(equalToConstant: 50)
+            textField.heightAnchor.constraint(equalTo: heightAnchor, multiplier: 0.75)
         ])
+    }
+    
+    private func activateConstraints() {
         
     }
     

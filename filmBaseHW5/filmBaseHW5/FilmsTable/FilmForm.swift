@@ -8,7 +8,7 @@
 import UIKit
 
 class FilmForm: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
-    public var mainView: MainView?
+    public var filmsTable: FilmsTable?
     
     private lazy var scrollView: UIScrollView = {
         scrollView = UIScrollView(frame: .zero)
@@ -85,7 +85,6 @@ class FilmForm: UIViewController, UIImagePickerControllerDelegate, UINavigationC
         let tap: UITapGestureRecognizer = UITapGestureRecognizer(
         target: self,
         action: #selector(dismissMyKeyboard))
-        //Add this tap gesture recognizer to the parent view
         self.view.addGestureRecognizer(tap)
 
         let safeLG = self.view.safeAreaLayoutGuide
@@ -113,14 +112,17 @@ class FilmForm: UIViewController, UIImagePickerControllerDelegate, UINavigationC
             filmNameNTF.topAnchor.constraint(equalTo: imagePicker.bottomAnchor, constant: 16),
             filmNameNTF.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16),
             filmNameNTF.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -16),
+            filmNameNTF.heightAnchor.constraint(equalToConstant: 72),
             
             producerNTF.topAnchor.constraint(equalTo: filmNameNTF.bottomAnchor, constant: 16),
             producerNTF.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16),
             producerNTF.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -16),
+            producerNTF.heightAnchor.constraint(equalToConstant: 72),
             
             yearNDF.topAnchor.constraint(equalTo: producerNTF.bottomAnchor, constant: 16),
             yearNDF.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16),
             yearNDF.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -16),
+            yearNDF.heightAnchor.constraint(equalToConstant: 72),
             
             starsMarker.topAnchor.constraint(equalTo: yearNDF.bottomAnchor, constant: 48),
             starsMarker.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 60),
@@ -166,7 +168,6 @@ class FilmForm: UIViewController, UIImagePickerControllerDelegate, UINavigationC
         } else {
             return
         }
-        
         imagePicker.setImage(newImage)
         
         dismiss(animated: true)
@@ -176,7 +177,7 @@ class FilmForm: UIViewController, UIImagePickerControllerDelegate, UINavigationC
     private func save() {
         assert(allDataIsValid())
         let filmData = FilmData(image: imagePicker.getData()!, filmName: filmNameNTF.getData(), producer: producerNTF.getData(), year: Int(yearNDF.getData())!, stars: starsMarker.getData()!)
-        mainView?.saveFilm(filmData)
+        filmsTable?.saveFilm(filmData)
         self.navigationController?.popViewController(animated: true)
     }
     

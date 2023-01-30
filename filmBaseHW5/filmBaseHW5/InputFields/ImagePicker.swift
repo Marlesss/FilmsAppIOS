@@ -16,6 +16,7 @@ class ImagePicker: UIControl, Field {
     private lazy var imageView: UIImageView = {
         imageView = UIImageView(frame: .zero)
         imageView.contentMode = .scaleAspectFit
+        imageView.backgroundColor = .clear
         imageView.translatesAutoresizingMaskIntoConstraints = false
         return imageView
     }()
