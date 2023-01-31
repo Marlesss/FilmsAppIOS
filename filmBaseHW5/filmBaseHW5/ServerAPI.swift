@@ -14,7 +14,8 @@ public enum ServerAPIError: Error {
     case unknownError
 }
 
-// TODO: add connection failed handling
+// TODO: recognize jpeg and png images
+// TODO: compress jpeg photos
 public class ServerAPI {
     public enum HTTPMethod: String {
         case GET = "GET"
@@ -38,17 +39,17 @@ public class ServerAPI {
         let user: [String:String]
     }
     
-    public class MovieResponse: Decodable, CustomStringConvertible {
+    public class Movie: Codable, CustomStringConvertible {
         public var description: String {
-            "\(id); \(title); \(director); \(reliseDate); \(rating); \(postedId); \(String(describing: createdAt))"
+            "\(id ?? -1); \(title); \(director); \(reliseDate); \(rating); \(posterId); \(String(describing: createdAt))"
         }
         
-        let id: Int
+        let id: Int?
         let title: String
         let director: String
         let reliseDate: Int
         let rating: Int
-        let postedId: String
+        let posterId: String
         let createdAt: Int?
         
         enum CodingKeys: CodingKey {
@@ -65,15 +66,36 @@ public class ServerAPI {
             case movie
         }
         
+        public init(id: Int? = nil, title: String, director: String, reliseDate: Int, rating: Int, posterId: String, createdAt: Int? = nil) {
+            self.id = id
+            self.title = title
+            self.director = director
+            self.reliseDate = reliseDate
+            self.rating = rating
+            self.posterId = posterId
+            self.createdAt = createdAt
+        }
+        
         required public init(from decoder: Decoder) throws {
             let container = try (try? decoder.container(keyedBy: outCodingKeys.self).nestedContainer(keyedBy: CodingKeys.self, forKey: .movie)) ?? decoder.container(keyedBy: CodingKeys.self)
-            self.id = try container.decode(Int.self, forKey: ServerAPI.MovieResponse.CodingKeys.id)
-            self.title = try container.decode(String.self, forKey: ServerAPI.MovieResponse.CodingKeys.title)
-            self.director = try container.decode(String.self, forKey: ServerAPI.MovieResponse.CodingKeys.director)
-            self.reliseDate = try container.decode(Int.self, forKey: ServerAPI.MovieResponse.CodingKeys.reliseDate)
-            self.rating = try container.decode(Int.self, forKey: ServerAPI.MovieResponse.CodingKeys.rating)
-            self.postedId = try container.decode(String.self, forKey: ServerAPI.MovieResponse.CodingKeys.posterId)
-            self.createdAt = try container.decode(Int.self, forKey: ServerAPI.MovieResponse.CodingKeys.createdAt)
+            self.id = try container.decode(Int.self, forKey: ServerAPI.Movie.CodingKeys.id)
+            self.title = try container.decode(String.self, forKey: ServerAPI.Movie.CodingKeys.title)
+            self.director = try container.decode(String.self, forKey: ServerAPI.Movie.CodingKeys.director)
+            self.reliseDate = try container.decode(Int.self, forKey: ServerAPI.Movie.CodingKeys.reliseDate)
+            self.rating = try container.decode(Int.self, forKey: ServerAPI.Movie.CodingKeys.rating)
+            self.posterId = try container.decode(String.self, forKey: ServerAPI.Movie.CodingKeys.posterId)
+            self.createdAt = try container.decode(Int.self, forKey: ServerAPI.Movie.CodingKeys.createdAt)
+        }
+        
+        public func encode(to encoder: Encoder) throws {
+            var container: KeyedEncodingContainer<ServerAPI.Movie.CodingKeys> = encoder.container(keyedBy: ServerAPI.Movie.CodingKeys.self)
+            try container.encodeIfPresent(self.id, forKey: ServerAPI.Movie.CodingKeys.id)
+            try container.encode(self.title, forKey: ServerAPI.Movie.CodingKeys.title)
+            try container.encode(self.director, forKey: ServerAPI.Movie.CodingKeys.director)
+            try container.encode(self.reliseDate, forKey: ServerAPI.Movie.CodingKeys.reliseDate)
+            try container.encode(self.rating, forKey: ServerAPI.Movie.CodingKeys.rating)
+            try container.encode(self.posterId, forKey: ServerAPI.Movie.CodingKeys.posterId)
+            try container.encode(self.createdAt, forKey: ServerAPI.Movie.CodingKeys.createdAt)
         }
     }
     
@@ -83,7 +105,7 @@ public class ServerAPI {
         }
         
         let cursor: Int?
-        let movies: [MovieResponse]
+        let movies: [Movie]
     }
     
     public class PostImageResponse: Decodable {
@@ -114,6 +136,10 @@ public class ServerAPI {
         session = URLSession.shared
     }
     
+    init(configuration: URLSessionConfiguration) {
+        session = URLSession(configuration: configuration)
+    }
+    
     static public func getURL(path: String, query: [String:String]? = nil) -> URL? {
         var urlConstructor = URLComponents()
         urlConstructor.scheme = urlScheme
@@ -127,7 +153,7 @@ public class ServerAPI {
     }
     
     static public func JSONEncode(data: Codable) -> Data {
-        try! JSONSerialization.data(withJSONObject: data)
+        try! encoder.encode(data)
     }
     
     static public func getURLRequest(url: URL?, httpMethod: HTTPMethod, contentType: ContentType? = nil, data: Data? = nil, token: String? = nil) -> URLRequest {
@@ -179,7 +205,10 @@ public class ServerAPI {
                         }
                         completion(.failure(.responseError(result.message)))
                     } else {
-                        completion(.failure(.responseError("Unknown MIME type")))
+                        if response.mimeType == "text/plain" {
+                            print(String(data: data, encoding: .utf8))
+                        }
+                        completion(.failure(.responseError("Unknown MIME type (Got \(response.mimeType)")))
                     }
                 } catch {
                     completion(.failure(.responseError("Couldn't decode response (\(error)")))
@@ -198,7 +227,7 @@ public class ServerAPI {
                 completion(.failure(err))
                 return
             case let .success((data, response)):
-                if response.mimeType == "image/jpeg" {
+                if response.mimeType == "image/jpeg" || response.mimeType == "image/png" {
                     let image = UIImage(data: data)
                     if let image = image {
                         completion(.success(image))
@@ -207,7 +236,11 @@ public class ServerAPI {
                     completion(.failure(.responseError("Couldn't decode image")))
                     return
                 }
-                completion(.failure(.responseError("Unknown MIME type")))
+                //                var message: String?
+                //                if response.mimeType == "text/plain" {
+                //                    message = try! ServerAPI.decoder.decode(String.self, from: data)
+                //                }
+                completion(.failure(.responseError("Unknown MIME type (Got \(response.mimeType))")))
             }
         }
         return handleData
@@ -223,7 +256,7 @@ public class ServerAPI {
         makeTask(request: request, completion: decodeJson(completion: completion))
     }
     
-    public func getMovie(id: Int, token: String, completion: @escaping @Sendable (Result<MovieResponse, ServerAPIError>) -> Void) {
+    public func getMovie(id: Int, token: String, completion: @escaping @Sendable (Result<Movie, ServerAPIError>) -> Void) {
         let request = ServerAPI.getURLRequest(url: ServerAPI.getURL(path: "/movies/\(id)"), httpMethod: .GET, token: token)
         makeTask(request: request, completion: decodeJson(completion: completion))
     }
@@ -234,17 +267,36 @@ public class ServerAPI {
     }
     
     public func postImage(image: UIImage, token: String, completion: @escaping @Sendable (Result<PostImageResponse, ServerAPIError>) -> Void) {
-        let request = ServerAPI.getURLRequest(url: ServerAPI.getURL(path: "/image/upload"), httpMethod: .POST, contentType: .PNG, data: image.pngData(), token: token)
+        let request = ServerAPI.getURLRequest(url: ServerAPI.getURL(path: "/image/upload"), httpMethod: .POST, contentType: .PNG, data: image.unrotatedPngData(), token: token)
         makeTask(request: request, completion: decodeJson(completion: completion))
     }
     
-    public func getImage(postedId: String, token: String, completion: @escaping @Sendable (Result<UIImage, ServerAPIError>) -> Void) {
-        let request = ServerAPI.getURLRequest(url: ServerAPI.getURL(path: "/image/\(postedId)"), httpMethod: .GET, token: token)
+    public func getImage(posterId: String, token: String, completion: @escaping @Sendable (Result<UIImage, ServerAPIError>) -> Void) {
+        let request = ServerAPI.getURLRequest(url: ServerAPI.getURL(path: "/image/\(posterId)"), httpMethod: .GET, token: token)
         makeTask(request: request, completion: decodeImage(completion: completion))
     }
     
     public func deleteMovie(id: Int, token: String, completion: @escaping @Sendable (Result<DeleteMovieResponse, ServerAPIError>) -> Void) {
         let request = ServerAPI.getURLRequest(url: ServerAPI.getURL(path: "/movies/\(id)"), httpMethod: .DELETE, token: token)
         makeTask(request: request, completion: decodeJson(completion: completion))
+    }
+    
+    public func postMovie(movie: Movie, token: String, completion: @escaping @Sendable (Result<Movie, ServerAPIError>) -> Void) {
+        let request = ServerAPI.getURLRequest(url: ServerAPI.getURL(path: "/movies/"), httpMethod: .POST, contentType: .JSON, data: ServerAPI.JSONEncode(data: ["movie":movie]), token: token)
+        makeTask(request: request, completion: decodeJson(completion: completion))
+    }
+}
+
+extension UIImage {
+    func unrotatedPngData() -> Data? {
+        if imageOrientation == .up {
+            return pngData()
+        }
+
+        let format = UIGraphicsImageRendererFormat()
+        format.scale = scale
+        return UIGraphicsImageRenderer(size: size, format: format).image { _ in
+            draw(at: .zero)
+        }.pngData()
     }
 }

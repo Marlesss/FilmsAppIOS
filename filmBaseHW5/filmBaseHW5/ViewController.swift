@@ -15,6 +15,9 @@ import Dispatch
 class ViewController: UIViewController {
     
     static public let serverAPI = ServerAPI()
+    static public let loadImageAPI = ServerAPI()
+    
+    public var currentUserToken: String?
     
     @IBOutlet private var loginTF: NamedTextField!
     @IBOutlet private var passwordTF: NamedTextField!
@@ -22,18 +25,21 @@ class ViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do any additional setup after loading the view.
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        currentUserToken = nil
     }
     
     @IBAction
     private func login() {
-        loginSuccessfully()
-        return
-        ViewController.serverAPI.login(login: loginTF.getData(), password: passwordTF.getData()) { result in
+//        ViewController.serverAPI.login(login: loginTF.getData(), password: passwordTF.getData())
+        ViewController.serverAPI.login(login: "admin", password: "123456")
+        { result in
             switch result {
-            case .success(_):
+            case let .success(loginResponse):
                 DispatchQueue.main.sync {
-                    self.loginSuccessfully()
+                    self.loginSuccessfully(loginResponse)
                 }
             case let .failure(err):
                 // TODO: color all red
@@ -42,8 +48,10 @@ class ViewController: UIViewController {
         }
     }
     
-    private func loginSuccessfully() {
-        let filmsTable = UIStoryboard(name: "FilmsTable", bundle: nil).instantiateInitialViewController()!
+    private func loginSuccessfully(_ loginResponse: ServerAPI.LoginResponse) {
+        currentUserToken = loginResponse.token
+        let filmsTable = UIStoryboard(name: "FilmsTable", bundle: nil).instantiateInitialViewController() as! FilmsTable
+        filmsTable.rootViewController = self
         self.navigationController?.pushViewController(filmsTable, animated: true)
     }
 }

@@ -10,27 +10,33 @@ import UIKit
 class FilmsTable: UIViewController, UITableViewDelegate {
     @IBOutlet private var tableView: UITableView!
     
-    private let refreshControl = UIRefreshControl()
+    public var rootViewController: ViewController?
     
-    private lazy var filmsSource = FilmsSource(tableView)
+//    private let refreshControl = UIRefreshControl()
+    
+    private lazy var filmsSource = FilmsSource(tableView, userToken!)
+    
+    private var userToken: String?
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        userToken = rootViewController!.currentUserToken
         tableView.dataSource = filmsSource
         tableView.delegate = self
+        
         tableView.register(UINib(nibName: "FilmCell", bundle: nil), forCellReuseIdentifier: "FilmCell")
         
-        tableView.addSubview(refreshControl)
-        refreshControl.addTarget(self, action: #selector(refreshData), for: .valueChanged)
+//        tableView.addSubview(refreshControl)
+//        refreshControl.addTarget(self, action: #selector(refreshData), for: .valueChanged)
         tableView.sectionIndexColor = .systemGreen
     }
     
-    @objc
-    private func refreshData(_ sender: Any) {
-        filmsSource.refreshData()
-        tableView.reloadData()
-        refreshControl.endRefreshing()
-    }
+//    @objc
+//    private func refreshData(_ sender: Any) {
+//        filmsSource.refreshData()
+//        tableView.reloadData()
+//        refreshControl.endRefreshing()
+//    }
     
     @IBAction func addFilm(_ sender: UIButton) {
         let filmForm = FilmForm()
@@ -41,7 +47,7 @@ class FilmsTable: UIViewController, UITableViewDelegate {
     func saveFilm(_ newFilm: FilmData) {
         filmsSource.saveFilm(newFilm)
     }
-            
+    
     func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
         let deleteAction = UIContextualAction(style: .destructive,
                                               title: "Удалить") { [weak self] (action, view, completionHandler) in
