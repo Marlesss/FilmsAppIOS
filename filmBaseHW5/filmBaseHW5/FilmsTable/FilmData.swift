@@ -9,9 +9,11 @@ public class FilmData: CustomStringConvertible {
     public let year: Int
     public let stars: Int
     public let image: UIImage
+    public let imageExtension: ImageExtension
     
-    init(image: UIImage, filmName: String, producer: String, year: Int, stars: Int) {
-        self.image = image
+    init(image: (UIImage, ImageExtension), filmName: String, producer: String, year: Int, stars: Int) {
+        self.image = image.0
+        self.imageExtension = image.1
         self.filmName = filmName
         self.producer = producer
         self.year = year
@@ -22,7 +24,7 @@ public class FilmData: CustomStringConvertible {
 extension ServerAPI.Movie {
     static public func make(from film: FilmData, token: String, completion: @escaping @Sendable (Result<ServerAPI.Movie, ServerAPIError>) -> Void) {
         DispatchQueue.global(qos: .userInitiated).async {
-            ViewController.loadImageAPI.postImage(image: film.image, token: token) { postResult in
+            ViewController.loadImageAPI.postImage(image: film.image, imageExtension: film.imageExtension, token: token) { postResult in
                 switch postResult {
                 case let .success(postResponse):
                     let movie = ServerAPI.Movie(title: film.filmName, director: film.producer, reliseDate: film.year, rating: film.stars, posterId: postResponse.posterId)

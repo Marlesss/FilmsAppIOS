@@ -7,6 +7,7 @@
 
 import UIKit
 
+// TODO: change tap event on imagePicker
 class FilmForm: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
     public var filmsTable: FilmsTable?
     
@@ -83,10 +84,10 @@ class FilmForm: UIViewController, UIImagePickerControllerDelegate, UINavigationC
         }
         
         let tap: UITapGestureRecognizer = UITapGestureRecognizer(
-        target: self,
-        action: #selector(dismissMyKeyboard))
+            target: self,
+            action: #selector(dismissMyKeyboard))
         self.view.addGestureRecognizer(tap)
-
+        
         let safeLG = self.view.safeAreaLayoutGuide
         let contentView = scrollView.contentLayoutGuide
         
@@ -146,7 +147,7 @@ class FilmForm: UIViewController, UIImagePickerControllerDelegate, UINavigationC
     private func dismissMyKeyboard() {
         self.view.endEditing(true)
     }
-
+    
     @objc
     private func pickImage() {
         if UIImagePickerController.isSourceTypeAvailable(.photoLibrary){
@@ -168,9 +169,16 @@ class FilmForm: UIViewController, UIImagePickerControllerDelegate, UINavigationC
         } else {
             return
         }
-        imagePicker.setImage(newImage)
-        
+        var imageExtension: ImageExtension?
+        if (info[.imageURL] as? URL)?.pathExtension == "png" {
+            imageExtension = .PNG
+        } else {
+            imageExtension = .JPEG
+        }
+        imagePicker.setImage(newImage, imageExtension!)
+
         dismiss(animated: true)
+        
     }
     
     @objc

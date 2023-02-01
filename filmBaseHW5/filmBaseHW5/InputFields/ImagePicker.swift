@@ -7,11 +7,16 @@
 
 import UIKit
 
+public enum ImageExtension {
+    case PNG
+    case JPEG
+}
+
 
 // TODO: fix permission denied
 // [AXRuntimeCommon] AX Lookup problem - errorCode:1100 error:Permission denied portName:'com.apple.iphone.axserver' PID:1544
-class ImagePicker: UIControl, Field {
-    typealias DataType = UIImage?
+public class ImagePicker: UIControl, Field {
+    typealias DataType = (UIImage, ImageExtension)?
 
     private lazy var imageView: UIImageView = {
         imageView = UIImageView(frame: .zero)
@@ -32,6 +37,7 @@ class ImagePicker: UIControl, Field {
     }()
     
     public let imagePicker = UIImagePickerController()
+    private var imageExtension: ImageExtension?
     
     init() {
         super.init(frame: .zero)
@@ -64,14 +70,18 @@ class ImagePicker: UIControl, Field {
         ])
     }
     
-    public func setImage(_ image: UIImage) {
+    public func setImage(_ image: UIImage, _ imageExtension: ImageExtension) {
         imageView.image = image
+        self.imageExtension = imageExtension
         showImage(true)
         sendActions(for: .editingChanged)
     }
     
     func getData() -> DataType {
-        imageView.image
+        if let image = imageView.image, let imageExtension = self.imageExtension {
+            return (image, imageExtension)
+        }
+        return nil
     }
     
     func clean() {

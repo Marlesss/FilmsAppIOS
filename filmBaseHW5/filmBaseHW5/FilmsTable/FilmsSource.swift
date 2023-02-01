@@ -9,6 +9,9 @@ import UIKit
 import Dispatch
 
 class FilmsSource: NSObject, UITableViewDataSource {
+    
+    static private let movieIdMax = 2147483647
+    static private let moviesPackageSize = 5
 
     private let tableView: UITableView
     
@@ -31,8 +34,8 @@ class FilmsSource: NSObject, UITableViewDataSource {
         loadAllData()
     }
     
-    private func loadAllData(store: [ServerAPI.Movie] = [], cursor: Int? = nil) {
-        ViewController.serverAPI.getMovies(cursor: cursor, count: 5, token: userToken) { result in
+    private func loadAllData(store: [ServerAPI.Movie] = [], cursor: Int? = FilmsSource.movieIdMax) {
+        ViewController.serverAPI.getMovies(cursor: cursor, count: FilmsSource.moviesPackageSize, token: userToken) { result in
             if case let .success(moviesResponse) = result {
                 let newStore = store + moviesResponse.movies
                 if let newCursor = moviesResponse.cursor {
@@ -41,24 +44,7 @@ class FilmsSource: NSObject, UITableViewDataSource {
                     }
                 } else {
                     DispatchQueue.main.sync {
-                        self.loadMaxIdFilm(store: newStore, preMaxId: newStore.map({ $0.id ?? -1 }).max(by: { $0 < $1 }) ?? 0)
-                    }
-                }
-            }
-        }
-    }
-    
-    private func loadMaxIdFilm(store: [ServerAPI.Movie], preMaxId: Int, cursorDelta: Int = 5) {
-        ViewController.serverAPI.getMovies(cursor: preMaxId + cursorDelta, count: 1, token: userToken) { result in
-            if case let .success(moviesResponse) = result {
-                let maxId = moviesResponse.movies.map({ $0.id ?? -1 }).max(by: { $0 > $1 }) ?? 0
-                if preMaxId >= maxId {
-                    DispatchQueue.main.sync {
-                        self.loadMaxIdFilm(store: store, preMaxId: preMaxId, cursorDelta: cursorDelta * 2)
-                    }
-                } else {
-                    DispatchQueue.main.sync {
-                        self.dataLoaded(store: store + [moviesResponse.movies.filter { movie in movie.id == maxId }[0]])
+                        self.dataLoaded(store: newStore)
                     }
                 }
             }

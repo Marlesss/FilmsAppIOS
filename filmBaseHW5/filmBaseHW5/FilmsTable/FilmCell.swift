@@ -6,6 +6,7 @@ import UIKit
 // TODO: fix lags
 public class FilmCell: UITableViewCell {
     private var movie: ServerAPI.Movie?
+    private var getImageTask: URLSessionDataTask?
     @IBOutlet var filmImageView: UIImageView!
     @IBOutlet var filmName: UILabel!
     @IBOutlet var producer: UILabel!
@@ -23,16 +24,18 @@ public class FilmCell: UITableViewCell {
     }
     
     @IBAction func starsChoosed() {
-//        guard let mark = stars.getData() else {
-//            return
-//        }
-//        filmData?.stars = mark
+        //        guard let mark = stars.getData() else {
+        //            return
+        //        }
+        //        filmData?.stars = mark
     }
     
     private func loadImage(_ movie: ServerAPI.Movie, _ token: String) {
         print("start loading \(movie.title)")
+        self.getImageTask?.cancel()
+        self.getImageTask = nil
         DispatchQueue.global(qos: .userInitiated).async {
-            ViewController.loadImageAPI.getImage(posterId: movie.posterId, token: token) { result in
+            self.getImageTask = ViewController.loadImageAPI.getImage(posterId: movie.posterId, token: token) { result in
                 switch result {
                 case let .success(image):
                     DispatchQueue.main.sync {
@@ -40,7 +43,7 @@ public class FilmCell: UITableViewCell {
                         self.setImage(movie, image)
                     }
                 case let .failure(err):
-                    print("Got error \(err)")
+                    print("Got error \(err) for \(movie.title)")
                 }
             }
         }
@@ -48,7 +51,7 @@ public class FilmCell: UITableViewCell {
     
     private func setImage(_ movie: ServerAPI.Movie, _ image: UIImage) {
         guard self.movie === movie else {return}
-        print("Set image for \(movie.title)")
         filmImageView.image = image
+        getImageTask = nil
     }
 }

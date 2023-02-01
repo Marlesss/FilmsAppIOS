@@ -14,9 +14,27 @@ public enum ServerAPIError: Error {
     case unknownError
 }
 
+// TODO: wonder post movie with posterId = "" means there is no poster
 // TODO: recognize jpeg and png images
 // TODO: compress jpeg photos
 public class ServerAPI {
+    
+    static private let encoder: JSONEncoder = {
+        let encoder = JSONEncoder()
+        encoder.keyEncodingStrategy = .convertToSnakeCase
+        return encoder
+    }()
+    static private let decoder: JSONDecoder = {
+        let decoder = JSONDecoder()
+        decoder.keyDecodingStrategy = .convertFromSnakeCase
+        return decoder
+    }()
+    static private let urlScheme = "http"
+    static private let urlHost = "192.168.31.94"
+    static private let urlPort = 8080
+    static private let imageMemoryLimit = 1024 * 1024 * 1 // 1 MB
+
+    
     public enum HTTPMethod: String {
         case GET = "GET"
         case POST = "POST"
@@ -26,6 +44,7 @@ public class ServerAPI {
     public enum ContentType: String {
         case JSON = "application/json; charset=UTF-8"
         case PNG = "image/png"
+        case JPEG = "image/jpeg"
     }
     
     public class ResponseData<T: Decodable>: Decodable {
@@ -115,21 +134,7 @@ public class ServerAPI {
     public class DeleteMovieResponse: Decodable {
         let deleted: Int
     }
-    
-    static private let encoder: JSONEncoder = {
-        let encoder = JSONEncoder()
-        encoder.keyEncodingStrategy = .convertToSnakeCase
-        return encoder
-    }()
-    static private let decoder: JSONDecoder = {
-        let decoder = JSONDecoder()
-        decoder.keyDecodingStrategy = .convertFromSnakeCase
-        return decoder
-    }()
-    static private let urlScheme = "http"
-    static private let urlHost = "127.0.0.1"
-    static private let urlPort = 8080
-    
+        
     private let session: URLSession
     
     init() {
@@ -169,7 +174,7 @@ public class ServerAPI {
         return request
     }
     
-    private func makeTask(request: URLRequest, completion: @escaping @Sendable (Result<(Data, URLResponse), ServerAPIError>) -> Void) {
+    private func makeTask(request: URLRequest, completion: @escaping @Sendable (Result<(Data, URLResponse), ServerAPIError>) -> Void) -> URLSessionDataTask {
         let task = session.dataTask(with: request) { data, response, error in
             guard let response = response else {
                 completion(.failure(.responseError("No response")))
@@ -186,6 +191,7 @@ public class ServerAPI {
             completion(.failure(.unknownError))
         }
         task.resume()
+        return task
     }
     
     @Sendable
@@ -266,14 +272,20 @@ public class ServerAPI {
         makeTask(request: request, completion: decodeJson(completion: completion))
     }
     
-    public func postImage(image: UIImage, token: String, completion: @escaping @Sendable (Result<PostImageResponse, ServerAPIError>) -> Void) {
-        let request = ServerAPI.getURLRequest(url: ServerAPI.getURL(path: "/image/upload"), httpMethod: .POST, contentType: .PNG, data: image.unrotatedPngData(), token: token)
+    public func postImage(image: UIImage, imageExtension: ImageExtension, token: String, completion: @escaping @Sendable (Result<PostImageResponse, ServerAPIError>) -> Void) {
+        var request: URLRequest
+        switch imageExtension {
+        case .PNG:
+            request = ServerAPI.getURLRequest(url: ServerAPI.getURL(path: "/image/upload"), httpMethod: .POST, contentType: .PNG, data: image.unrotatedPngData(), token: token)
+        case .JPEG:
+            request = ServerAPI.getURLRequest(url: ServerAPI.getURL(path: "/image/upload"), httpMethod: .POST, contentType: .JPEG, data: image.compressedJpegData(memoryLimit: ServerAPI.imageMemoryLimit), token: token)
+        }
         makeTask(request: request, completion: decodeJson(completion: completion))
     }
     
-    public func getImage(posterId: String, token: String, completion: @escaping @Sendable (Result<UIImage, ServerAPIError>) -> Void) {
+    public func getImage(posterId: String, token: String, completion: @escaping @Sendable (Result<UIImage, ServerAPIError>) -> Void) -> URLSessionDataTask {
         let request = ServerAPI.getURLRequest(url: ServerAPI.getURL(path: "/image/\(posterId)"), httpMethod: .GET, token: token)
-        makeTask(request: request, completion: decodeImage(completion: completion))
+        return makeTask(request: request, completion: decodeImage(completion: completion))
     }
     
     public func deleteMovie(id: Int, token: String, completion: @escaping @Sendable (Result<DeleteMovieResponse, ServerAPIError>) -> Void) {
@@ -298,5 +310,10 @@ extension UIImage {
         return UIGraphicsImageRenderer(size: size, format: format).image { _ in
             draw(at: .zero)
         }.pngData()
+    }
+    
+    func compressedJpegData(memoryLimit: Int) -> Data? {
+        let memory = jpegData(compressionQuality: 1)?.count ?? 0
+        return jpegData(compressionQuality: min(1, CGFloat(memoryLimit) / CGFloat(memory)))
     }
 }
