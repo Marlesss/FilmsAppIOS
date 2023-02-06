@@ -38,13 +38,16 @@ class FilmsSource: NSObject, UITableViewDataSource {
         ViewController.serverAPI.getMovies(cursor: cursor, count: FilmsSource.moviesPackageSize, token: userToken) { result in
             if case let .success(moviesResponse) = result {
                 let newStore = store + moviesResponse.movies
-                if let newCursor = moviesResponse.cursor {
-                    DispatchQueue.main.sync {
-                        self.loadAllData(store: newStore, cursor: newCursor)
-                    }
-                } else {
-                    DispatchQueue.main.sync {
-                        self.dataLoaded(store: newStore)
+                // TODO: ???
+                DispatchQueue.global(qos: .userInteractive).async {
+                    if let newCursor = moviesResponse.cursor {
+                        DispatchQueue.main.sync {
+                            self.loadAllData(store: newStore, cursor: newCursor)
+                        }
+                    } else {
+                        DispatchQueue.main.sync {
+                            self.dataLoaded(store: newStore)
+                        }
                     }
                 }
             }

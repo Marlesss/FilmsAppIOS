@@ -41,12 +41,12 @@ final class ServerAPITests: XCTestCase {
                     XCTFail("Got error \(err)")
                 }
             }
-            serverAPI.getMovie(id: 34, token: token) { result in
+            serverAPI.getMovie(id: 7, token: token) { result in
                 if case let .failure(err) = result {
                     XCTFail("Got error \(err)")
                 }
             }
-            serverAPI.getMovie(id: 5, token: token) { result in
+            serverAPI.getMovie(id: 1234123421, token: token) { result in
                 if case .success(_) = result {
                     XCTFail("Got value, error expected")
                 }
@@ -97,7 +97,7 @@ final class ServerAPITests: XCTestCase {
 
     func testGetImage() {
         @Sendable func continueWithToken(token: String) {
-            serverAPI.getImage(posterId: "a923245a-5d80-4c1f-95a2-5fc653235711", token: token) { result in
+            serverAPI.getImage(posterId: "aaf26adf-841b-4fce-87c2-08ca950e2fb2", token: token) { result in
                 if case let .failure(err) = result {
                     XCTFail("Got error \(err)")
                 }
@@ -123,8 +123,19 @@ final class ServerAPITests: XCTestCase {
     
     func testPostMovie() {
         @Sendable func continueWithToken(token: String) {
-            serverAPI.postMovie(movie: ServerAPI.Movie(title: "TestFilm", director: "AbobaTester", reliseDate: 2023, rating: 2, posterId: "a923245a-5d80-4c1f-95a2-5fc653235711"), token: token) { result in
-                if case let .failure(err) = result {
+            serverAPI.postMovie(movie: ServerAPI.Movie(title: "TestFilm", director: "AbobaTester", reliseDate: 2023, rating: 2, posterId: "aaf26adf-841b-4fce-87c2-08ca950e2fb2"), token: token) { result in
+                switch result {
+                case let .success(movie):
+                    if let id = movie.id {
+                        serverAPI.deleteMovie(id: id, token: token) { result in
+                            if case let .failure(err) = result {
+                                XCTFail("Got error: \(err)")
+                            }
+                        }
+                    } else {
+                        XCTFail("There is no id in movie response")
+                    }
+                case let .failure(err):
                     XCTFail("Got error: \(err)")
                 }
             }

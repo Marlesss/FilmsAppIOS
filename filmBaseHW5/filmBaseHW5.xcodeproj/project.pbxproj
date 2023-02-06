@@ -8,6 +8,11 @@
 
 /* Begin PBXBuildFile section */
 		A92B27AC29872E080044D1E9 /* ServerAPITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A92B27AB29872E080044D1E9 /* ServerAPITests.swift */; };
+		A95B59FF298DB472007A5D6B /* ConcurrentJobTracker.swift in Sources */ = {isa = PBXBuildFile; fileRef = A95B59FA298DB472007A5D6B /* ConcurrentJobTracker.swift */; };
+		A95B5A00298DB472007A5D6B /* CombineJobTracker.swift in Sources */ = {isa = PBXBuildFile; fileRef = A95B59FB298DB472007A5D6B /* CombineJobTracker.swift */; };
+		A95B5A01298DB472007A5D6B /* GCDJobTracker.swift in Sources */ = {isa = PBXBuildFile; fileRef = A95B59FC298DB472007A5D6B /* GCDJobTracker.swift */; };
+		A95B5A02298DB472007A5D6B /* Status.swift in Sources */ = {isa = PBXBuildFile; fileRef = A95B59FD298DB472007A5D6B /* Status.swift */; };
+		A95B5A03298DB472007A5D6B /* Definitions.swift in Sources */ = {isa = PBXBuildFile; fileRef = A95B59FE298DB472007A5D6B /* Definitions.swift */; };
 		A99A9A3E298086900026EBB1 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A99A9A3D298086900026EBB1 /* AppDelegate.swift */; };
 		A99A9A40298086900026EBB1 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A99A9A3F298086900026EBB1 /* SceneDelegate.swift */; };
 		A99A9A42298086900026EBB1 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A99A9A41298086900026EBB1 /* ViewController.swift */; };
@@ -51,6 +56,11 @@
 		A92B27AB29872E080044D1E9 /* ServerAPITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServerAPITests.swift; sourceTree = "<group>"; };
 		A92B27B229872E6F0044D1E9 /* UnitTests */ = {isa = PBXFileReference; lastKnownFileType = folder; path = UnitTests; sourceTree = "<group>"; };
 		A92B27B329872EAF0044D1E9 /* UnitTests.xctestplan */ = {isa = PBXFileReference; lastKnownFileType = text; path = UnitTests.xctestplan; sourceTree = "<group>"; };
+		A95B59FA298DB472007A5D6B /* ConcurrentJobTracker.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ConcurrentJobTracker.swift; sourceTree = "<group>"; };
+		A95B59FB298DB472007A5D6B /* CombineJobTracker.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CombineJobTracker.swift; sourceTree = "<group>"; };
+		A95B59FC298DB472007A5D6B /* GCDJobTracker.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GCDJobTracker.swift; sourceTree = "<group>"; };
+		A95B59FD298DB472007A5D6B /* Status.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Status.swift; sourceTree = "<group>"; };
+		A95B59FE298DB472007A5D6B /* Definitions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Definitions.swift; sourceTree = "<group>"; };
 		A99A9A3A298086900026EBB1 /* filmBaseHW5.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = filmBaseHW5.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		A99A9A3D298086900026EBB1 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		A99A9A3F298086900026EBB1 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -108,6 +118,18 @@
 			path = UnitTests;
 			sourceTree = "<group>";
 		};
+		A95B59F3298DAFA9007A5D6B /* JobTracking */ = {
+			isa = PBXGroup;
+			children = (
+				A95B59FB298DB472007A5D6B /* CombineJobTracker.swift */,
+				A95B59FA298DB472007A5D6B /* ConcurrentJobTracker.swift */,
+				A95B59FE298DB472007A5D6B /* Definitions.swift */,
+				A95B59FC298DB472007A5D6B /* GCDJobTracker.swift */,
+				A95B59FD298DB472007A5D6B /* Status.swift */,
+			);
+			path = JobTracking;
+			sourceTree = "<group>";
+		};
 		A99A9A31298086900026EBB1 = {
 			isa = PBXGroup;
 			children = (
@@ -131,6 +153,7 @@
 		A99A9A3C298086900026EBB1 /* filmBaseHW5 */ = {
 			isa = PBXGroup;
 			children = (
+				A95B59F3298DAFA9007A5D6B /* JobTracking */,
 				A9E6BB85298874AD00BE85DC /* InputFields */,
 				A99A9A7529809C8D0026EBB1 /* FilmsTable */,
 				A99A9A3D298086900026EBB1 /* AppDelegate.swift */,
@@ -291,11 +314,13 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A95B5A03298DB472007A5D6B /* Definitions.swift in Sources */,
 				A99A9A642980988F0026EBB1 /* FilmData.swift in Sources */,
 				A99A9A692980988F0026EBB1 /* FilmCell.swift in Sources */,
 				A99A9A682980988F0026EBB1 /* StarsRow.swift in Sources */,
 				A99A9A6B2980988F0026EBB1 /* StarButton.swift in Sources */,
 				A99A9A72298099820026EBB1 /* FilmsTable.swift in Sources */,
+				A95B5A01298DB472007A5D6B /* GCDJobTracker.swift in Sources */,
 				A99A9A782980C51C0026EBB1 /* Field.swift in Sources */,
 				A99A9A6D2980988F0026EBB1 /* MyTextField.swift in Sources */,
 				A9DCE1B22986BEBF00189B37 /* ServerAPI.swift in Sources */,
@@ -304,6 +329,9 @@
 				A99A9A42298086900026EBB1 /* ViewController.swift in Sources */,
 				A99A9A632980988F0026EBB1 /* NamedTextField.swift in Sources */,
 				A99A9A3E298086900026EBB1 /* AppDelegate.swift in Sources */,
+				A95B59FF298DB472007A5D6B /* ConcurrentJobTracker.swift in Sources */,
+				A95B5A02298DB472007A5D6B /* Status.swift in Sources */,
+				A95B5A00298DB472007A5D6B /* CombineJobTracker.swift in Sources */,
 				A99A9A652980988F0026EBB1 /* Validator.swift in Sources */,
 				A99A9A7A29821C4B0026EBB1 /* ImagePicker.swift in Sources */,
 				A99A9A40298086900026EBB1 /* SceneDelegate.swift in Sources */,

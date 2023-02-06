@@ -17,6 +17,7 @@ public enum ServerAPIError: Error {
 // TODO: wonder post movie with posterId = "" means there is no poster
 // TODO: recognize jpeg and png images
 // TODO: compress jpeg photos
+// TODO: add reconnect to server
 public class ServerAPI {
     
     static private let encoder: JSONEncoder = {
@@ -32,8 +33,8 @@ public class ServerAPI {
     static private let urlScheme = "http"
     static private let urlHost = "192.168.31.94"
     static private let urlPort = 8080
-    static private let imageMemoryLimit = 1024 * 1024 * 1 // 1 MB
-
+    static private let imageMemoryLimit = 2 * 1024 * 1024 // 2 MB
+    
     
     public enum HTTPMethod: String {
         case GET = "GET"
@@ -134,8 +135,18 @@ public class ServerAPI {
     public class DeleteMovieResponse: Decodable {
         let deleted: Int
     }
-        
+    
     private let session: URLSession
+    private let urlCache = URLCache(memoryCapacity: 0, diskCapacity: 50 * 1024 * 1024)
+    private lazy var gcdImageGetter = GCDJobTracker<[String], UIImage, ServerAPIError>(memoizing: .started) { requestData, completion in
+        guard requestData.count == 2 else {
+            completion(.failure(ServerAPIError.unknownError))
+            return
+        }
+        let (posterId, token) = (requestData[0], requestData[1])
+        let request = ServerAPI.getURLRequest(url: ServerAPI.getURL(path: "/image/\(posterId)"), httpMethod: .GET, token: token)
+        let _ = self.storeInCache(request: request, completion: self.decodeImage(completion))
+    }
     
     init() {
         session = URLSession.shared
@@ -175,6 +186,7 @@ public class ServerAPI {
     }
     
     private func makeTask(request: URLRequest, completion: @escaping @Sendable (Result<(Data, URLResponse), ServerAPIError>) -> Void) -> URLSessionDataTask {
+        
         let task = session.dataTask(with: request) { data, response, error in
             guard let response = response else {
                 completion(.failure(.responseError("No response")))
@@ -195,7 +207,7 @@ public class ServerAPI {
     }
     
     @Sendable
-    private func decodeJson<T: Decodable>(completion: @escaping @Sendable (Result<T, ServerAPIError>) -> Void) -> (@Sendable (Result<(Data, URLResponse), ServerAPIError>) -> Void) {
+    private func decodeJson<T: Decodable>(_ completion: @escaping @Sendable (Result<T, ServerAPIError>) -> Void) -> (@Sendable (Result<(Data, URLResponse), ServerAPIError>) -> Void) {
         @Sendable func handleData(result: Result<(Data, URLResponse), ServerAPIError>){
             switch result {
             case let .failure(err):
@@ -212,9 +224,9 @@ public class ServerAPI {
                         completion(.failure(.responseError(result.message)))
                     } else {
                         if response.mimeType == "text/plain" {
-                            print(String(data: data, encoding: .utf8))
+                            print(String(data: data, encoding: .utf8) ?? "")
                         }
-                        completion(.failure(.responseError("Unknown MIME type (Got \(response.mimeType)")))
+                        completion(.failure(.responseError("Unknown MIME type (Got \(String(describing: response.mimeType))")))
                     }
                 } catch {
                     completion(.failure(.responseError("Couldn't decode response (\(error)")))
@@ -226,7 +238,7 @@ public class ServerAPI {
     }
     
     @Sendable
-    private func decodeImage(completion: @escaping @Sendable (Result<UIImage, ServerAPIError>) -> Void) -> (@Sendable (Result<(Data, URLResponse), ServerAPIError>) -> Void) {
+    private func decodeImage(_ completion: @escaping @Sendable (Result<UIImage, ServerAPIError>) -> Void) -> (@Sendable (Result<(Data, URLResponse), ServerAPIError>) -> Void) {
         @Sendable func handleData(result: Result<(Data, URLResponse), ServerAPIError>) {
             switch result {
             case let .failure(err):
@@ -246,30 +258,52 @@ public class ServerAPI {
                 //                if response.mimeType == "text/plain" {
                 //                    message = try! ServerAPI.decoder.decode(String.self, from: data)
                 //                }
-                completion(.failure(.responseError("Unknown MIME type (Got \(response.mimeType))")))
+                completion(.failure(.responseError("Unknown MIME type (Got \(String(describing: response.mimeType)))")))
             }
         }
         return handleData
     }
     
+    private func storeInCache(request: URLRequest, completion: @escaping @Sendable (Result<(Data, URLResponse), ServerAPIError>) -> Void) -> URLSessionDataTask? {
+        
+        @Sendable
+        func completionWithCaching(_ result: Result<(Data, URLResponse), ServerAPIError>) -> Void {
+            DispatchQueue.main.sync {
+                if case let .success(success) = result {
+                    self.urlCache.storeCachedResponse(CachedURLResponse(response: success.1, data: success.0), for: request)
+                }
+            }
+            completion(result)
+        }
+
+        
+        if let response = urlCache.cachedResponse(for: request) {
+            completion(.success((response.data, response.response)))
+            return nil
+        }
+        
+        return makeTask(request: request, completion: completionWithCaching)
+    }
+    
+    
     public func register(login: String, password: String, email: String, completion: @escaping @Sendable (Result<String, ServerAPIError>) -> Void) {
         let request = ServerAPI.getURLRequest(url: ServerAPI.getURL(path: "/auth/register"), httpMethod: .POST, contentType: .JSON, data: ServerAPI.JSONEncode(data: ["login": login, "password": password, "email": email]))
-        makeTask(request: request, completion: decodeJson(completion: completion))
+        let _ = makeTask(request: request, completion: decodeJson(completion))
     }
     
     public func login(login: String, password: String, email: String? = nil, completion: @escaping @Sendable (Result<LoginResponse, ServerAPIError>) -> Void) {
         let request = ServerAPI.getURLRequest(url: ServerAPI.getURL(path: "/auth/login"), httpMethod: .POST, contentType: .JSON, data: ServerAPI.JSONEncode(data: ["login": login, "password": password, "email": email].compactMapValues({$0})))
-        makeTask(request: request, completion: decodeJson(completion: completion))
+        let _ = makeTask(request: request, completion: decodeJson(completion))
     }
     
     public func getMovie(id: Int, token: String, completion: @escaping @Sendable (Result<Movie, ServerAPIError>) -> Void) {
         let request = ServerAPI.getURLRequest(url: ServerAPI.getURL(path: "/movies/\(id)"), httpMethod: .GET, token: token)
-        makeTask(request: request, completion: decodeJson(completion: completion))
+        let _ = makeTask(request: request, completion: decodeJson(completion))
     }
     
     public func getMovies(cursor: Int? = nil, count: Int, token: String, completion: @escaping @Sendable (Result<MoviesResponse, ServerAPIError>) -> Void) {
         let request = ServerAPI.getURLRequest(url: ServerAPI.getURL(path: "/movies/", query: ["cursor": cursor, "count": count].compactMapValues({$0}).mapValues({String($0)})), httpMethod: .GET, token: token)
-        makeTask(request: request, completion: decodeJson(completion: completion))
+        let _ = makeTask(request: request, completion: decodeJson(completion))
     }
     
     public func postImage(image: UIImage, imageExtension: ImageExtension, token: String, completion: @escaping @Sendable (Result<PostImageResponse, ServerAPIError>) -> Void) {
@@ -280,22 +314,24 @@ public class ServerAPI {
         case .JPEG:
             request = ServerAPI.getURLRequest(url: ServerAPI.getURL(path: "/image/upload"), httpMethod: .POST, contentType: .JPEG, data: image.compressedJpegData(memoryLimit: ServerAPI.imageMemoryLimit), token: token)
         }
-        makeTask(request: request, completion: decodeJson(completion: completion))
+        let _ = makeTask(request: request, completion: decodeJson(completion))
     }
     
-    public func getImage(posterId: String, token: String, completion: @escaping @Sendable (Result<UIImage, ServerAPIError>) -> Void) -> URLSessionDataTask {
-        let request = ServerAPI.getURLRequest(url: ServerAPI.getURL(path: "/image/\(posterId)"), httpMethod: .GET, token: token)
-        return makeTask(request: request, completion: decodeImage(completion: completion))
+    
+    public func getImage(posterId: String, token: String, completion: @escaping @Sendable (Result<UIImage, ServerAPIError>) -> Void) {
+        gcdImageGetter.startJob(for: [posterId, token], completion: completion)
+//        let request = ServerAPI.getURLRequest(url: ServerAPI.getURL(path: "/image/\(posterId)"), httpMethod: .GET, token: token)
+//        return storeInCache(request: request, completion: decodeImage(completion))
     }
     
     public func deleteMovie(id: Int, token: String, completion: @escaping @Sendable (Result<DeleteMovieResponse, ServerAPIError>) -> Void) {
         let request = ServerAPI.getURLRequest(url: ServerAPI.getURL(path: "/movies/\(id)"), httpMethod: .DELETE, token: token)
-        makeTask(request: request, completion: decodeJson(completion: completion))
+        let _ = makeTask(request: request, completion: decodeJson(completion))
     }
     
     public func postMovie(movie: Movie, token: String, completion: @escaping @Sendable (Result<Movie, ServerAPIError>) -> Void) {
         let request = ServerAPI.getURLRequest(url: ServerAPI.getURL(path: "/movies/"), httpMethod: .POST, contentType: .JSON, data: ServerAPI.JSONEncode(data: ["movie":movie]), token: token)
-        makeTask(request: request, completion: decodeJson(completion: completion))
+        let _ = makeTask(request: request, completion: decodeJson(completion))
     }
 }
 
@@ -304,7 +340,7 @@ extension UIImage {
         if imageOrientation == .up {
             return pngData()
         }
-
+        
         let format = UIGraphicsImageRendererFormat()
         format.scale = scale
         return UIGraphicsImageRenderer(size: size, format: format).image { _ in
