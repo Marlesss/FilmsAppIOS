@@ -1,0 +1,18 @@
+
+/* Class = "UIButton"; configuration.title = "Button"; ObjectID = "EsZ-6y-2i6"; */
+"EsZ-6y-2i6.configuration.title" = "Button";
+
+/* Class = "UIButton"; normalTitle = "Button"; ObjectID = "EsZ-6y-2i6"; */
+"EsZ-6y-2i6.normalTitle" = "Button";
+
+/* Class = "UIButton"; configuration.title = "Войти"; ObjectID = "ReD-Ah-6gf"; */
+"ReD-Ah-6gf.configuration.title" = "Войти";
+
+/* Class = "UIButton"; normalTitle = "Button"; ObjectID = "ReD-Ah-6gf"; */
+"ReD-Ah-6gf.normalTitle" = "Button";
+
+/* Class = "UILabel"; text = "LOOL"; ObjectID = "YXG-8q-t2p"; */
+"YXG-8q-t2p.text" = "LOOL";
+
+/* Class = "UILabel"; text = "Войти"; ObjectID = "lfa-fy-vtL"; */
+"lfa-fy-vtL.text" = "Войти";

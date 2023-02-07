@@ -35,7 +35,7 @@ class FilmsSource: NSObject, UITableViewDataSource {
     }
     
     private func loadAllData(store: [ServerAPI.Movie] = [], cursor: Int? = FilmsSource.movieIdMax) {
-        ViewController.serverAPI.getMovies(cursor: cursor, count: FilmsSource.moviesPackageSize, token: userToken) { result in
+        SignInView.serverAPI.getMovies(cursor: cursor, count: FilmsSource.moviesPackageSize, token: userToken) { result in
             if case let .success(moviesResponse) = result {
                 let newStore = store + moviesResponse.movies
                 // TODO: ???
@@ -95,7 +95,7 @@ class FilmsSource: NSObject, UITableViewDataSource {
         let year = uniqYears[indexPath.section]
         let index = films.firstIndex(where: {film in film.reliseDate == year})! + indexPath.item
         let movie = films[index]
-        ViewController.serverAPI.deleteMovie(id: movie.id!, token: userToken) { deleteResult in
+        SignInView.serverAPI.deleteMovie(id: movie.id!, token: userToken) { deleteResult in
             if case let .failure(err) = deleteResult {
                 print("Got err \(err)")
             }

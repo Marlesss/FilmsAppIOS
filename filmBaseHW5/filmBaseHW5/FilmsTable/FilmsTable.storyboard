@@ -8,7 +8,7 @@
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
-        <!--Films Table-->
+        <!--Фильмы-->
         <scene sceneID="tne-QT-ifu">
             <objects>
                 <viewController storyboardIdentifier="FilmsTable" id="BYZ-38-t0r" customClass="FilmsTable" customModule="filmBaseHW5" customModuleProvider="target" sceneMemberID="viewController">
@@ -16,6 +16,11 @@
                         <rect key="frame" x="0.0" y="0.0" width="390" height="844"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" allowsSelection="NO" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="-1" estimatedSectionHeaderHeight="-1" sectionFooterHeight="-1" estimatedSectionFooterHeight="-1" translatesAutoresizingMaskIntoConstraints="NO" id="AXJ-d8-tlo">
+                                <rect key="frame" x="0.0" y="47" width="390" height="680"/>
+                                <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                                <sections/>
+                            </tableView>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="tox-q0-IIE">
                                 <rect key="frame" x="116.66666666666667" y="751" width="156.66666666666663" height="35"/>
                                 <state key="normal" title="Button"/>
@@ -24,11 +29,6 @@
                                     <action selector="addFilm:" destination="BYZ-38-t0r" eventType="touchUpInside" id="CVt-pe-55b"/>
                                 </connections>
                             </button>
-                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" allowsSelection="NO" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="-1" estimatedSectionHeaderHeight="-1" sectionFooterHeight="-1" estimatedSectionFooterHeight="-1" translatesAutoresizingMaskIntoConstraints="NO" id="AXJ-d8-tlo">
-                                <rect key="frame" x="0.0" y="47" width="390" height="680"/>
-                                <color key="backgroundColor" systemColor="systemBackgroundColor"/>
-                                <sections/>
-                            </tableView>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
@@ -41,7 +41,7 @@
                             <constraint firstItem="AXJ-d8-tlo" firstAttribute="trailing" secondItem="6Tk-OE-BBY" secondAttribute="trailing" id="fCn-oY-axl"/>
                         </constraints>
                     </view>
-                    <navigationItem key="navigationItem" id="q8V-Ol-elj"/>
+                    <navigationItem key="navigationItem" title="Фильмы" id="q8V-Ol-elj"/>
                     <connections>
                         <outlet property="tableView" destination="AXJ-d8-tlo" id="u6x-MQ-N6j"/>
                     </connections>

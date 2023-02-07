@@ -17,14 +17,6 @@ class FilmForm: UIViewController, UIImagePickerControllerDelegate, UINavigationC
         return scrollView
     }()
     
-    private lazy var headerLabel: UILabel = {
-        headerLabel = UILabel()
-        headerLabel.text = "Фильм"
-        headerLabel.font = .boldSystemFont(ofSize: 30)
-        headerLabel.translatesAutoresizingMaskIntoConstraints = false
-        headerLabel.textAlignment = .center
-        return headerLabel
-    }()
     private lazy var filmNameNTF = NamedTextField(frame: .zero,
                                                   name: "Название",
                                                   textField: MyTextField(frame: .zero, placeholder: "Название фильма"),
@@ -71,8 +63,10 @@ class FilmForm: UIViewController, UIImagePickerControllerDelegate, UINavigationC
         super.viewDidLoad()
         
         self.view.backgroundColor = .systemBackground
+        self.navigationItem.title = "Добавить фильм"
+        self.navigationItem.largeTitleDisplayMode = .automatic
         
-        for subview in [headerLabel, scrollView, clearButton, saveButton] {
+        for subview in [scrollView, clearButton, saveButton] {
             view.addSubview(subview)
         }
         for subview in fields {
@@ -93,11 +87,7 @@ class FilmForm: UIViewController, UIImagePickerControllerDelegate, UINavigationC
         
         NSLayoutConstraint.activate([
             
-            headerLabel.topAnchor.constraint(equalTo: safeLG.topAnchor),
-            headerLabel.leadingAnchor.constraint(equalTo: safeLG.leadingAnchor),
-            headerLabel.trailingAnchor.constraint(equalTo: safeLG.trailingAnchor),
-            
-            scrollView.topAnchor.constraint(equalTo: headerLabel.bottomAnchor, constant: 40),
+            scrollView.topAnchor.constraint(equalTo: safeLG.topAnchor),
             scrollView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
             scrollView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor),
             
@@ -105,7 +95,7 @@ class FilmForm: UIViewController, UIImagePickerControllerDelegate, UINavigationC
             contentView.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor),
             contentView.trailingAnchor.constraint(equalTo: scrollView.trailingAnchor),
             
-            imagePicker.topAnchor.constraint(equalTo: contentView.topAnchor),
+            imagePicker.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 40),
             imagePicker.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16),
             imagePicker.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -16),
             imagePicker.heightAnchor.constraint(equalToConstant: 172),
@@ -200,8 +190,8 @@ class FilmForm: UIViewController, UIImagePickerControllerDelegate, UINavigationC
     
     private func allDataIsValid() -> Bool {
         fields
-            .map { field in field.dataIsValid() }
-            .reduce(into: true) { partialResult, bool in partialResult = partialResult && bool }
+            .map { $0.dataIsValid() }
+            .reduce(into: true) { $0 = $0 && $1 }
     }
     
     
@@ -217,9 +207,7 @@ class FilmForm: UIViewController, UIImagePickerControllerDelegate, UINavigationC
     
     @objc
     private func cleanData() {
-        fields.forEach { field in
-            field.clean()
-        }
+        fields.forEach { $0.clean() }
     }
     
 }

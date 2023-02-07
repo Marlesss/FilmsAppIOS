@@ -24,11 +24,11 @@ public class FilmData: CustomStringConvertible {
 extension ServerAPI.Movie {
     static public func make(from film: FilmData, token: String, completion: @escaping @Sendable (Result<ServerAPI.Movie, ServerAPIError>) -> Void) {
         DispatchQueue.global(qos: .userInitiated).async {
-            ViewController.loadImageAPI.postImage(image: film.image, imageExtension: film.imageExtension, token: token) { postResult in
+            SignInView.loadImageAPI.postImage(image: film.image, imageExtension: film.imageExtension, token: token) { postResult in
                 switch postResult {
                 case let .success(postResponse):
                     let movie = ServerAPI.Movie(title: film.filmName, director: film.producer, reliseDate: film.year, rating: film.stars, posterId: postResponse.posterId)
-                    ViewController.serverAPI.postMovie(movie: movie, token: token) { movieResult in
+                    SignInView.serverAPI.postMovie(movie: movie, token: token) { movieResult in
                         switch movieResult {
                         case let .success(movieResponse):
                             completion(.success(movieResponse))

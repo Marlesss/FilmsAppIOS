@@ -1,9 +1,6 @@
 import UIKit
 
 
-// TODO: caching images
-// TODO: make tasks cancellable (or not?)
-// TODO: fix lags
 public class FilmCell: UITableViewCell {
     private var movie: ServerAPI.Movie?
     @IBOutlet var filmImageView: UIImageView!
@@ -32,7 +29,7 @@ public class FilmCell: UITableViewCell {
     private func loadImage(_ movie: ServerAPI.Movie, _ token: String) {
         print("start loading \(movie.title)")
         DispatchQueue.global(qos: .userInitiated).async {
-            ViewController.loadImageAPI.getImage(posterId: movie.posterId, token: token) { result in
+            SignInView.loadImageAPI.getImage(posterId: movie.posterId, token: token) { result in
                 switch result {
                 case let .success(image):
                     DispatchQueue.main.sync {

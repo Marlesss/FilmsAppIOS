@@ -3,7 +3,7 @@ import Combine
 import Foundation
 
 public class CombineJobTracker<Key: Hashable, Output, Failure: Error>: PublishingJobTracking {
-    public typealias JobPublisher = Publishers.Map<Publishers.Filter<CurrentValueSubject<Optional<Output>, Failure>>, Output>
+    public typealias JobPublisher = Publishers.CompactMap<CurrentValueSubject<Optional<Output>, Failure>, Output>
     
     public required init(memoizing: MemoizationOptions, worker: @escaping JobWorker<Key, Output, Failure>) {
         self.memoizing = memoizing
@@ -14,8 +14,7 @@ public class CombineJobTracker<Key: Hashable, Output, Failure: Error>: Publishin
         return syncQueue.sync {
             if !self.memoizing.contains(.started) {
                 let toPublic: CurrentValueSubject<Output?, Failure> = CurrentValueSubject<Output?, Failure>(nil)
-                // TODO: toSubscribe -> compactMap
-                let toSubscribe = toPublic.filter { val in val != nil }.map { val in val!}
+                let toSubscribe = toPublic.compactMap({$0})
                 DispatchQueue.global(qos: .userInteractive).async {
                     self.worker(key, {result in
                         self.sendResult(publisher: toPublic, result: result)
@@ -27,7 +26,7 @@ public class CombineJobTracker<Key: Hashable, Output, Failure: Error>: Publishin
                 self.status[key] = .started
                 
                 let toPublic: CurrentValueSubject<Output?, Failure> = CurrentValueSubject<Output?, Failure>(nil)
-                let toSubscribe = toPublic.filter { val in val != nil }.map { val in val!}
+                let toSubscribe = toPublic.compactMap({$0})
                 DispatchQueue.global().async {
                     self.worker(key, {result in
                         self.sendResult(publisher: toPublic, result: result)

@@ -10,7 +10,7 @@ import UIKit
 class FilmsTable: UIViewController, UITableViewDelegate {
     @IBOutlet private var tableView: UITableView!
     
-    public var rootViewController: ViewController?
+    public var rootViewController: SignInView?
     
 //    private let refreshControl = UIRefreshControl()
     
