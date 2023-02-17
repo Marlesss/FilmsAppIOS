@@ -1,3 +1,4 @@
+// TODO: MainActor -> Actor
 public class ConcurrentJobTracker<Key: Hashable, Output, Failure: Error>: AsyncJobTracking {
     
     required public init(memoizing: MemoizationOptions, worker: @escaping JobWorker<Key, Output, Failure>) {
@@ -5,7 +6,6 @@ public class ConcurrentJobTracker<Key: Hashable, Output, Failure: Error>: AsyncJ
         self.worker = worker
     }
     
-    // TODO: MainActor -> Actor
     @MainActor
     public func startJob(for key: Key) async throws -> Output {
         if !self.memoizing.contains(.started) {
@@ -31,12 +31,10 @@ public class ConcurrentJobTracker<Key: Hashable, Output, Failure: Error>: AsyncJ
         }
     }
     
-    // TODO: MainActor -> Actor
     @MainActor
     private func setStarted(_ key: Key) {
         self.status[key] = .started
     }
-    // TODO: MainActor -> Actor
     @MainActor
     private func setTaskBy(_ key: Key, _ task: Task<Result<Output, Failure>, Never>) {
         self.taskBy[key] = task
@@ -45,10 +43,8 @@ public class ConcurrentJobTracker<Key: Hashable, Output, Failure: Error>: AsyncJ
     
     private let memoizing: MemoizationOptions
     private let worker: JobWorker<Key, Output, Failure>
-    // TODO: MainActor -> Actor
     @MainActor
     private var status: [Key:Status<Output, Failure>] = [:]
-    // TODO: MainActor -> Actor
     @MainActor
     private var taskBy: [Key:Task<Result<Output, Failure>, Never>] = [:]
     
@@ -76,7 +72,6 @@ public class ConcurrentJobTracker<Key: Hashable, Output, Failure: Error>: AsyncJ
         }
     }
     
-    // TODO: MainActor -> Actor
     @MainActor
     private func rememberResult(for key: Key, result: Result<Output, Failure>) {
         if memoizing.contains(.succeeded), case .success(_) = result {

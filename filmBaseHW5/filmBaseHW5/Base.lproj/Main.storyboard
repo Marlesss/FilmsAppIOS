@@ -51,8 +51,8 @@
                                     <constraint firstAttribute="height" constant="72" id="3Sv-es-nxm"/>
                                 </constraints>
                                 <userDefinedRuntimeAttributes>
-                                    <userDefinedRuntimeAttribute type="string" keyPath="name" value="Пароль"/>
-                                    <userDefinedRuntimeAttribute type="string" keyPath="placeholder" value="Введите пароль"/>
+                                    <userDefinedRuntimeAttribute type="string" keyPath="labelText" value="Пароль"/>
+                                    <userDefinedRuntimeAttribute type="string" keyPath="placeholderString" value="Введите пароль"/>
                                 </userDefinedRuntimeAttributes>
                             </view>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ReD-Ah-6gf" userLabel="signInBtn">
@@ -82,7 +82,7 @@
                                     <color key="baseForegroundColor" red="0.43756357636988474" green="0.71172880884141398" blue="0.37947207642571279" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                                 </buttonConfiguration>
                                 <connections>
-                                    <segue destination="Hxb-Eo-iy0" kind="show" id="BUf-NC-uwb"/>
+                                    <segue destination="Hxb-Eo-iy0" kind="show" id="8DT-yX-vDX"/>
                                 </connections>
                             </button>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="dNM-fF-WNy" customClass="NamedTextField" customModule="filmBaseHW5" customModuleProvider="target">
@@ -92,8 +92,8 @@
                                     <constraint firstAttribute="height" constant="72" id="YuR-i5-w5D"/>
                                 </constraints>
                                 <userDefinedRuntimeAttributes>
-                                    <userDefinedRuntimeAttribute type="string" keyPath="name" value="Логин"/>
-                                    <userDefinedRuntimeAttribute type="string" keyPath="placeholder" value="Введите логин"/>
+                                    <userDefinedRuntimeAttribute type="string" keyPath="labelText" value="Логин"/>
+                                    <userDefinedRuntimeAttribute type="string" keyPath="placeholderString" value="Введите логин"/>
                                 </userDefinedRuntimeAttributes>
                             </view>
                         </subviews>
@@ -141,8 +141,8 @@
                                     <constraint firstAttribute="height" constant="72" id="XEe-5D-nb3"/>
                                 </constraints>
                                 <userDefinedRuntimeAttributes>
-                                    <userDefinedRuntimeAttribute type="string" keyPath="name" value="Логин"/>
-                                    <userDefinedRuntimeAttribute type="string" keyPath="placeholder" value="Введите логин"/>
+                                    <userDefinedRuntimeAttribute type="string" keyPath="labelText" value="Логин"/>
+                                    <userDefinedRuntimeAttribute type="string" keyPath="placeholderString" value="Введите логин"/>
                                 </userDefinedRuntimeAttributes>
                             </view>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="5t8-NW-5zt" userLabel="password" customClass="NamedTextField" customModule="filmBaseHW5" customModuleProvider="target">
@@ -153,8 +153,8 @@
                                     <constraint firstAttribute="height" constant="72" id="y5D-bY-mfv"/>
                                 </constraints>
                                 <userDefinedRuntimeAttributes>
-                                    <userDefinedRuntimeAttribute type="string" keyPath="name" value="Пароль"/>
-                                    <userDefinedRuntimeAttribute type="string" keyPath="placeholder" value="Введите пароль"/>
+                                    <userDefinedRuntimeAttribute type="string" keyPath="labelText" value="Пароль"/>
+                                    <userDefinedRuntimeAttribute type="string" keyPath="placeholderString" value="Введите пароль"/>
                                 </userDefinedRuntimeAttributes>
                             </view>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="SvZ-tI-pHU" userLabel="emailTF" customClass="NamedTextField" customModule="filmBaseHW5" customModuleProvider="target">
@@ -165,8 +165,8 @@
                                     <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="72" id="rjK-lP-ywq"/>
                                 </constraints>
                                 <userDefinedRuntimeAttributes>
-                                    <userDefinedRuntimeAttribute type="string" keyPath="name" value="Электронная почта"/>
-                                    <userDefinedRuntimeAttribute type="string" keyPath="placeholder" value="Введите электронную почту"/>
+                                    <userDefinedRuntimeAttribute type="string" keyPath="labelText" value="Электронная почта"/>
+                                    <userDefinedRuntimeAttribute type="string" keyPath="placeholderString" value="Введите электронную почту"/>
                                 </userDefinedRuntimeAttributes>
                             </view>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Py3-sJ-t0g" userLabel="signUp">
@@ -182,9 +182,6 @@
                                     </backgroundConfiguration>
                                     <color key="baseForegroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 </buttonConfiguration>
-                                <connections>
-                                    <action selector="signIn" destination="BYZ-38-t0r" eventType="touchDown" id="opk-dU-7vI"/>
-                                </connections>
                             </button>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="gX0-Ux-fsR"/>

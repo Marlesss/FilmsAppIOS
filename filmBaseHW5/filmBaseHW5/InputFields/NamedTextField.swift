@@ -1,14 +1,8 @@
-//
-//  NamedTextField.swift
-//  ios-itmo-2022-assignment2
-//
-//  Created by Алексей Щербаков on 21.10.2022.
-//
-
 import UIKit
 
-// TODO: refactor inits
-class NamedTextField : UIControl, Field {
+// TODO: fix paint error
+@IBDesignable
+class NamedTextField: UIControl, Field {
     typealias DataType = String
     
     private lazy var label: UILabel = {
@@ -17,79 +11,91 @@ class NamedTextField : UIControl, Field {
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
+    private lazy var space: UIView = {
+        space = UIView()
+        space.translatesAutoresizingMaskIntoConstraints = false
+        return space
+    }()
+    internal lazy var textField: MyTextField = {
+        textField = MyTextField(frame: .zero)
+        textField.translatesAutoresizingMaskIntoConstraints = false
+        return textField
+    }()
+    public var validator: Validator?
     
-    private let textField: MyTextField
-    private let validator: Validator
-    
-    @IBInspectable private var name: String = "" {
-        didSet {
-            label.text = name
-        }
+    @IBInspectable public var labelText: String? {
+        get { label.text }
+        set { label.text = newValue }
+    }
+    @IBInspectable public var labelTextColor: UIColor? {
+        didSet { label.textColor = labelTextColor }
+    }
+    @IBInspectable public var padding: CGFloat {
+        get { textField.padding }
+        set { textField.padding = newValue }
+    }
+    @IBInspectable public var cornerRadius: CGFloat {
+        get { textField.layer.cornerRadius }
+        set { textField.layer.cornerRadius = newValue }
+    }
+    @IBInspectable public var borderWidth: CGFloat {
+        get { textField.layer.borderWidth }
+        set { textField.layer.borderWidth = newValue }
+    }
+    @IBInspectable public var borderColor: UIColor? {
+        didSet { textField.layer.borderColor = borderColor?.cgColor }
+    }
+    @IBInspectable public var textBackgroundColor: UIColor? {
+        didSet { textField.backgroundColor = textBackgroundColor }
     }
     
-    @IBInspectable private var placeholder: String = "" {
-        didSet {
-            textField.placeholder = placeholder
-        }
+    @IBInspectable public var placeholderString: String? {
+        get { textField.placeholder }
+        set { textField.placeholder = newValue }
     }
-
     
-    init(frame: CGRect, name: String, textField: MyTextField, validator: Validator = Validator.Everything()) {
-        self.textField = textField
-        self.validator = validator
-        
+    override init(frame: CGRect = .zero) {
         super.init(frame: frame)
-        initSubviews()
-        defer {
-            self.name = name
-        }
+        postInit()
     }
-    
-    init(frame: CGRect, name: String, placeholder: String, validator: Validator = Validator.Everything()) {
-        self.textField = MyTextField()
-        self.validator = validator
-        
-        super.init(frame: frame)
-        initSubviews()
-        defer {
-            self.name = name
-            self.placeholder = placeholder
-        }
-    }
-
     
     required init?(coder: NSCoder) {
-        self.textField = MyTextField()
-        self.validator = .Everything()
         super.init(coder: coder)
-        initSubviews()
+        postInit()
     }
     
-    private func initSubviews() {
-        translatesAutoresizingMaskIntoConstraints = false
-        addSubview(label)
-        addSubview(textField)
-        paint(stateIsNormal: true)
+    private func postInit() {
+        setDefaults()
         
-        textField.addTarget(self, action: #selector(validateData), for: .editingChanged)
+        for subview in [label, space, textField] {
+            addSubview(subview)
+        }
         
         NSLayoutConstraint.activate([
             label.leadingAnchor.constraint(equalTo: leadingAnchor),
             label.trailingAnchor.constraint(equalTo: trailingAnchor),
             label.topAnchor.constraint(equalTo: topAnchor),
-//            label.heightAnchor.constraint(equalToConstant: 15),
-            label.bottomAnchor.constraint(equalTo: textField.topAnchor, constant: -8),
-            
+            label.bottomAnchor.constraint(equalTo: space.topAnchor),
+            space.leadingAnchor.constraint(equalTo: leadingAnchor),
+            space.trailingAnchor.constraint(equalTo: trailingAnchor),
+            space.bottomAnchor.constraint(equalTo: textField.topAnchor),
+            space.heightAnchor.constraint(equalTo: heightAnchor, multiplier: 0.05),
             textField.leadingAnchor.constraint(equalTo: leadingAnchor),
             textField.trailingAnchor.constraint(equalTo: trailingAnchor),
             textField.bottomAnchor.constraint(equalTo: bottomAnchor),
-//            textField.heightAnchor.constraint(equalToConstant: 50)
             textField.heightAnchor.constraint(equalTo: heightAnchor, multiplier: 0.75)
         ])
+        
+        addTarget(self, action: #selector(validateData), for: .editingChanged)
     }
     
-    private func activateConstraints() {
-        
+    private func setDefaults() {
+        labelTextColor = UIColor(red: 102/255, green: 102/255, blue: 102/255, alpha: 1)
+        padding = 16
+        cornerRadius = 8
+        borderWidth = 1
+        borderColor = UIColor.black
+        textBackgroundColor = UIColor(white: 0.9, alpha: 0.2)
     }
     
     @objc
@@ -107,17 +113,18 @@ class NamedTextField : UIControl, Field {
     }
     
     func dataIsValid() -> Bool {
-        validator.validate(text: getData())
+        guard let validator = validator else { return true }
+        return validator.validate(text: getData())
     }
     
     
     private func paint(stateIsNormal: Bool) {
         if (stateIsNormal) {
-            label.textColor = UIColor(red: 102/255, green: 102/255, blue: 102/255, alpha: 1)
-            textField.layer.borderColor = CGColor(gray: 232/255, alpha: 1)
+            label.textColor = labelTextColor
+            textField.layer.borderColor = borderColor?.cgColor
         } else {
-            label.textColor = .systemRed
-            textField.layer.borderColor = UIColor.systemRed.cgColor
+            label.textColor = .red
+            textField.layer.borderColor = UIColor.red.cgColor
         }
     }
     

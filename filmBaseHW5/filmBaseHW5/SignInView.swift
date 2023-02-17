@@ -3,11 +3,19 @@ import Dispatch
 
 // TODO: make password field
 // TODO: make validators @IBInspectable
-// TODO: add validators to TF
 // TODO: show API errors
 // TODO: passwordTF secure text entry
 // TODO: make load-image-tasks cancellable through return dispatchqueue
-// TODO: make NTF designable (show it on storyboard)
+// TODO: end up SignUpVC
+// TODO: add colors in white/black theme
+// TODO: add localization
+// TODO: think about FilmCell design
+// TODO: add image loading sign in FilmCell
+// TODO: make an ending of register with API request
+// TODO: add validation of login/password/email fields
+// TODO: enable login requests
+// TODO: use keychain services to keep login session
+// TODO: add pagination loading of films
 class SignInView: UIViewController {
     
     static public let serverAPI = ServerAPI()
@@ -30,7 +38,7 @@ class SignInView: UIViewController {
     private func signIn() -> Bool {
         guard !loginInProcess else {return false}
         loginInProcess = true
-        //                ViewController.serverAPI.login(login: loginTF.getData(), password: passwordTF.getData())
+//                        ViewController.serverAPI.login(login: loginTF.getData(), password: passwordTF.getData())
         SignInView.serverAPI.login(login: "admin", password: "123456")
         { result in
             DispatchQueue.main.sync {

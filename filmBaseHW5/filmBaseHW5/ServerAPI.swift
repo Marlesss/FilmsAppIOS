@@ -15,8 +15,6 @@ public enum ServerAPIError: Error {
 }
 
 // TODO: wonder post movie with posterId = "" means there is no poster
-// TODO: recognize jpeg and png images
-// TODO: compress jpeg photos
 // TODO: add reconnect to server
 public class ServerAPI {
     

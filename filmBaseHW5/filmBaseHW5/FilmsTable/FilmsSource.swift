@@ -38,7 +38,6 @@ class FilmsSource: NSObject, UITableViewDataSource {
         SignInView.serverAPI.getMovies(cursor: cursor, count: FilmsSource.moviesPackageSize, token: userToken) { result in
             if case let .success(moviesResponse) = result {
                 let newStore = store + moviesResponse.movies
-                // TODO: ???
                 DispatchQueue.global(qos: .userInteractive).async {
                     if let newCursor = moviesResponse.cursor {
                         DispatchQueue.main.sync {

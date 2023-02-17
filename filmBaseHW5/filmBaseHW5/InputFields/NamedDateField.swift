@@ -11,7 +11,6 @@ import UIKit
 // TODO: datepicker localization?????
 // TODO: scantext permission denied ;(
 class NamedDateField: NamedTextField {
-    private let textField: MyTextField
     private lazy var datePicker: UIDatePicker = {
         datePicker = UIDatePicker()
         datePicker.datePickerMode = .date
@@ -19,15 +18,19 @@ class NamedDateField: NamedTextField {
         return datePicker
     }()
     
-    override init(frame: CGRect, name: String, textField: MyTextField, validator: Validator) {
-        self.textField = textField
-        super.init(frame: frame, name: name, textField: textField, validator: validator)
-        textField.inputView = datePicker
-        datePicker.addTarget(self, action: #selector(datePicked), for: .valueChanged)
+    override init(frame: CGRect = .zero) {
+        super.init(frame: frame)
+        postInit()
     }
     
     required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
+        super.init(coder: coder)
+        postInit()
+    }
+    
+    private func postInit() {
+        textField.inputView = datePicker
+        datePicker.addTarget(self, action: #selector(datePicked), for: .valueChanged)
     }
     
     @objc

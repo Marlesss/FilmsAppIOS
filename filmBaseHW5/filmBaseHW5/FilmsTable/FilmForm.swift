@@ -8,6 +8,7 @@
 import UIKit
 
 // TODO: change tap event on imagePicker
+// TODO: make default values of year and stars
 class FilmForm: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
     public var filmsTable: FilmsTable?
     
@@ -17,18 +18,31 @@ class FilmForm: UIViewController, UIImagePickerControllerDelegate, UINavigationC
         return scrollView
     }()
     
-    private lazy var filmNameNTF = NamedTextField(frame: .zero,
-                                                  name: "Название",
-                                                  textField: MyTextField(frame: .zero, placeholder: "Название фильма"),
-                                                  validator: Validator.lengthFrom1To300)
-    private lazy var producerNTF = NamedTextField(frame: .zero,
-                                                  name: "Режиссёр",
-                                                  textField: MyTextField(frame: .zero, placeholder: "Режиссёр фильма"),
-                                                  validator: Validator.lengthFrom3To300 && Validator.charsInRuOrEngAlph && Validator.wordsStartsInUpperCase)
-    private lazy var yearNDF = NamedDateField(frame: .zero,
-                                              name: "Год",
-                                              textField: MyTextField(frame: .zero, placeholder: "Год выпуска"),
-                                              validator: Validator.yearFormat)
+    private lazy var filmNameNTF: NamedTextField = {
+        let ntf = NamedTextField()
+        ntf.translatesAutoresizingMaskIntoConstraints = false
+        ntf.labelText = "Название"
+        ntf.placeholderString = "Название фильма"
+        ntf.validator = Validator.lengthFrom1To300
+        return ntf
+    }()
+    private lazy var producerNTF: NamedTextField = {
+        let ntf = NamedTextField()
+        ntf.translatesAutoresizingMaskIntoConstraints = false
+        ntf.labelText = "Режиссёр"
+        ntf.placeholderString = "Режиссёр фильма"
+        ntf.validator = Validator.lengthFrom3To300 && Validator.charsInRuOrEngAlph && Validator.wordsStartsInUpperCase
+        return ntf
+    }()
+    private lazy var yearNDF: NamedDateField = {
+        let ndf = NamedDateField()
+        ndf.translatesAutoresizingMaskIntoConstraints = false
+        ndf.labelText = "Год"
+        ndf.placeholderString = "Год выпуска"
+        ndf.validator = Validator.yearFormat
+        return ndf
+    }()
+    
     private lazy var starsMarker = StarsMarker(frame: .zero, n: 5)
     private lazy var fields: [any Field] = [imagePicker, filmNameNTF, producerNTF, yearNDF, starsMarker]
     private lazy var saveButton: UIButton = {

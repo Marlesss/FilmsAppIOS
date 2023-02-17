@@ -7,19 +7,28 @@
 
 import UIKit
 
+@IBDesignable
 class StarButton: UIButton {
-    static let starOffImage = UIImage(named: "Star")
-    static let starOnImage = UIImage(named: "Union")
-    public let i: Int
+    static let starOffImage = UIImage(named: "StarOff")
+    static let starOnImage = UIImage(named: "StarOn")
+    @IBInspectable private var off: UIImage?
+    @IBInspectable public var i: Int = 0
     init(frame: CGRect, i: Int) {
         self.i = i
         super.init(frame: frame)
-        setImage(StarButton.starOffImage, for: .normal)
-        setImage(StarButton.starOnImage, for: .highlighted)
         translatesAutoresizingMaskIntoConstraints = false
+        postInit()
     }
     
     required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
+        super.init(coder: coder)
+        defer {
+            postInit()
+        }
+    }
+    
+    private func postInit() {
+        setImage(StarButton.starOffImage, for: .normal)
+        setImage(StarButton.starOnImage, for: .highlighted)
     }
 }
